@@ -1,6 +1,6 @@
 from flask_restplus import Api
 
-from .cats import api as ns1
+from .models.cats import api as ns1
 
 api = Api(
     title='My title',
