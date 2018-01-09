@@ -4,7 +4,7 @@ from flask_restplus import Resource, Namespace
 # /Users/jakanakiwanuka/work/RestplusDemo/app/app/apis/models/user.py
 from app.apis.models.user import User
 
-api = Namespace('Users', description='User sign up and login operations')
+api = Namespace('users', description='User sign up and login operations')
 
 @api.route('/register')
 class UserRegistration(Resource):
@@ -15,6 +15,19 @@ class UserRegistration(Resource):
         """Registers a user """
         pass
 
-    def get(self):
-        """get all registered users"""
+
+@api.route('/login')
+class UserLogin(Resource):
+    @api.response(200, 'User sucessfully Loged in')
+    @api.response(404, 'User not registered')
+    def post(self):
+        """Logs in a regestered user"""
         pass
+    
+@api.route('/logout')
+class UserLogout(Resource):
+    @api.response(200, "Successfully loged out")
+    def delete(self):
+        """logout a regestered user"""
+        pass
+    
