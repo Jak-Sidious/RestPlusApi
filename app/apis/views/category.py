@@ -4,7 +4,7 @@ from flask_restplus import Resource, Namespace
 # /Users/jakanakiwanuka/work/RestplusDemo/app/app/apis/models/user.py
 from app.apis.models.category import Category
 
-api = Namespace('category', description='Category options')
+api = Namespace('category', description='Category related functionality')
 
 @api.route('/')
 class CategoryCollection(Resource):
