@@ -1,9 +1,10 @@
-from flask import request
+from flask import request, json
 from flask_restplus import Resource, Namespace
 
 # /Users/jakanakiwanuka/work/RestplusDemo/app/app/apis/models/user.py
 from app.apis.models.user import User
 from ..functionality.serializers import usah
+from ..functionality.utilities import register_user
 
 api = Namespace('users', description='User sign up and login operations')
 
@@ -15,7 +16,9 @@ class UserRegistration(Resource):
     @api.expect(usah)
     def post(self):
         """Registers a user """
-        pass
+        data = request.get_json()
+        register_user(data)
+        return {"message": "User succesfully registered"} , 201
 
 
 @api.route('/login')

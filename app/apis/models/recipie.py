@@ -16,8 +16,8 @@ class Recipie(db.Model):
     recipie_id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     recipie_name = db.Column(db.String(100), nullable=False)
     ingredients = db.Column(db.String(256), nullable=False)
-    created_by = db.Column(db.Integer, db.ForeignKey('User.user_id'), nullable = False )
-    attached_category = db.Column(db.Integer, db.ForeignKey('Category.category_id'))
+    created_by = db.Column(db.Integer, db.ForeignKey('users.user_id'), nullable = False )
+    attached_category = db.Column(db.Integer, db.ForeignKey('categories.category_id'))
     date_created = db.Column(db.DateTime(), default=datetime.now)
     date_modified = db.Column(db.DateTime(), default=datetime.now)
 
