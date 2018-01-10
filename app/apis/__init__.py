@@ -1,9 +1,6 @@
 from flask_restplus import Api
 
 # from .models.cats import api as ns1
-from .views.user import api as ns1
-from .views.category import api as ns2
-from .views.recipie import api as ns3
 
 
 api = Api(
@@ -12,6 +9,10 @@ api = Api(
     description='A description of sorts'
 )
 
+
+from .views.user import api as ns1
+from .views.category import api as ns2
+from .views.recipie import api as ns3
 # api.add_namespace(ns1)
 api.add_namespace(ns1)
 api.add_namespace(ns2)

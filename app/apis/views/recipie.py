@@ -1,8 +1,8 @@
 from flask import request
 from flask_restplus import Resource, Namespace
 
-# /Users/jakanakiwanuka/work/RestplusDemo/app/app/apis/models/user.py
 from app.apis.models.recipie import Recipie
+from ..functionality.serializers import recipe
 
 api = Namespace('recipie', description='Recipie related functionality')
 
@@ -14,6 +14,7 @@ class RecipieCollection(Resource):
 
     @api.response(201, 'Category successfully created.')
     @api.response(409, 'Conflict, Category already exists')
+    @api.expect(recipe)
     def post(self):
         """ Creates a new Recipie """
         pass

@@ -1,8 +1,8 @@
 from flask import request
 from flask_restplus import Resource, Namespace
 
-# /Users/jakanakiwanuka/work/RestplusDemo/app/app/apis/models/user.py
 from app.apis.models.category import Category
+from ..functionality.serializers import category
 
 api = Namespace('category', description='Category related functionality')
 
@@ -14,6 +14,7 @@ class CategoryCollection(Resource):
 
     @api.response(201, 'Category successfully created.')
     @api.response(409, 'Conflict, Category already exists')
+    @api.expect(category)
     def post(self):
         """ Creates a new Category """
         pass
