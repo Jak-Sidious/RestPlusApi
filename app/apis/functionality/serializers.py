@@ -1,3 +1,4 @@
+# app/apis/functionality/serializers.py
 from flask_restplus import fields, Resource
 
 from app.apis import api
