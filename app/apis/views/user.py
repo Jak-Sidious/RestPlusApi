@@ -17,9 +17,21 @@ class UserRegistration(Resource):
     def post(self):
         """Registers a user """
         data = request.get_json()
+        print (data)
         register_user(data)
         return {"message": "User succesfully registered"} , 201
 
+
+#reference
+# user_data = {
+#             "username": "testuser",
+#             "password": "testuser12345"
+#         }
+#         response = self.app.post("/users/register", data=json.dumps(user_data), content_type="application/json")
+#         msg = json.loads(response.data)
+
+#         self.assertIn(msg['message'], 'User succesfully registered')
+#         self.assertEqual(response.status_code, 201)
 
 @api.route('/login')
 class UserLogin(Resource):
@@ -30,11 +42,4 @@ class UserLogin(Resource):
         data = request.get_json()
         user_login(data)
         return {"message": "User succesfully Loged in"}, 200
-    
-@api.route('/logout')
-class UserLogout(Resource):
-    @api.response(200, "Successfully loged out")
-    def delete(self):
-        """logout a regestered user"""
-        pass
     

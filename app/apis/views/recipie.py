@@ -1,7 +1,7 @@
 from flask import request
 from flask_restplus import Resource, Namespace
 
-from app.apis.models.recipie import Recipie
+# from app.apis.models.recipie import Recipie
 from ..functionality.serializers import recipe
 
 api = Namespace('recipie', description='Recipie related functionality')

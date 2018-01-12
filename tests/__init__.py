@@ -4,6 +4,7 @@ from instance.config import app_config
 
 from run import app
 from app import db
+from app.apis import models
 
 class BaseTest(TestCase):
 

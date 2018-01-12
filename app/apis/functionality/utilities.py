@@ -1,7 +1,7 @@
 # app/apis/functionality/utilities.py
 
 from app.apis.models.user import User
-from sqlalchemy.orm.exc import NoResultFound
+# from sqlalchemy.orm.exc import NoResultFound
 
 
 from flask import jsonify
@@ -22,7 +22,7 @@ def user_login(data):
     password = data.get('password')
     user = User.query.filter_by(username=username).first()
     if user is None:
-        raise NoResultFound
+        return {"message": "User not registered"}, 404
     else:
         if user.password_is_valid(password):
             access_token = user.generate_token(user.user_id)

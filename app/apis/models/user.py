@@ -15,6 +15,9 @@ class User(db.Model):
     user_id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     username = db.Column(db.String(50), nullable=False, unique=True)
     password = db.Column(db.String(256), nullable=False)
+    db.relationship('Categories', backref = 'user',
+                    lazy = 'dynamic')
+
 
     #todo modify user model to incorporate more unique identifiers 
     def __init__(self, username, password):

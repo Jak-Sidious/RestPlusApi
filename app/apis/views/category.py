@@ -1,7 +1,7 @@
 from flask import request
 from flask_restplus import Resource, Namespace
 
-from app.apis.models.category import Category
+# from app.apis.models.category import Category
 from ..functionality.serializers import category
 
 api = Namespace('category', description='Category related functionality')
