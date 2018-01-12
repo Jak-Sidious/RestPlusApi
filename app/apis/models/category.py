@@ -2,7 +2,7 @@
 
 from flask_bcrypt import Bcrypt
 from app import db
-from app.apis.models.user import User
+
 
 import jwt
 from datetime import datetime, timedelta
@@ -19,7 +19,9 @@ class Category(db.Model):
     date_modified = db.Column(
         db.DateTime, default=db.func.current_timestamp(),
         onupdate=db.func.current_timestamp())
-    # created_by = db.Column(db.Integer, db.ForeignKey(User.user_id))
+    created_by = db.Column(db.Integer, db.ForeignKey('users.user_id'), nullable=False)
+    users = relationship("User", backref="categories")
+
 
     def __init__(self, category_name, category_description, created_by):
         self.category_name = category_name

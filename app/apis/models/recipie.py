@@ -2,8 +2,6 @@
 
 from flask_bcrypt import Bcrypt
 from app import db
-from app.apis.models.user import User
-from app.apis.models.category import Category
 
 import jwt
 from datetime import datetime, timedelta
@@ -26,8 +24,8 @@ class Recipie(db.Model):
         and attached category """
         self.recipie_name = recipie_name
         self.ingredients = ingredients
-        self.attached_category = attached_category
-        self.created_by = created_by
+        # self.attached_category = attached_category
+        # self.created_by = created_by
 
     def save(self):
         """Save a recipie"""

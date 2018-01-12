@@ -22,17 +22,6 @@ class UserRegistration(Resource):
         return {"message": "User succesfully registered"} , 201
 
 
-#reference
-# user_data = {
-#             "username": "testuser",
-#             "password": "testuser12345"
-#         }
-#         response = self.app.post("/users/register", data=json.dumps(user_data), content_type="application/json")
-#         msg = json.loads(response.data)
-
-#         self.assertIn(msg['message'], 'User succesfully registered')
-#         self.assertEqual(response.status_code, 201)
-
 @api.route('/login')
 class UserLogin(Resource):
     @api.response(200, 'User sucessfully Loged in')

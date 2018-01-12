@@ -7,6 +7,7 @@ import jwt
 from datetime import datetime, timedelta
 
 
+
 class User(db.Model):
     """This class represnets the Users table."""
 
@@ -15,7 +16,7 @@ class User(db.Model):
     user_id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     username = db.Column(db.String(50), nullable=False, unique=True)
     password = db.Column(db.String(256), nullable=False)
-    db.relationship('Categories', backref = 'user',
+    categories = db.relationship("Category", backref = "users",
                     lazy = 'dynamic')
 
 
