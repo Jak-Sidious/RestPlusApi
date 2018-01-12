@@ -12,7 +12,6 @@ class UserTest(BaseTest):
         }
         response = self.app.post("/users/register", data=json.dumps(user_data), content_type="application/json")
         msg = json.loads(response.data)
-        print (msg)
 
         self.assertIn(msg['message'], 'User succesfully registered')
         self.assertEqual(response.status_code, 201)

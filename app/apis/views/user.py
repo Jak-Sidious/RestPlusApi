@@ -4,7 +4,7 @@ from flask_restplus import Resource, Namespace
 # /Users/jakanakiwanuka/work/RestplusDemo/app/app/apis/models/user.py
 from app.apis.models.user import User
 from ..functionality.serializers import usah
-from ..functionality.utilities import register_user
+from ..functionality.utilities import register_user, user_login
 
 api = Namespace('users', description='User sign up and login operations')
 
@@ -27,7 +27,9 @@ class UserLogin(Resource):
     @api.response(404, 'User not registered')
     def post(self):
         """Logs in a regestered user"""
-        pass
+        data = request.get_json()
+        user_login(data)
+        return {"message": "User succesfully Loged in"}, 200
     
 @api.route('/logout')
 class UserLogout(Resource):

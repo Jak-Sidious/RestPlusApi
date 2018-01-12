@@ -9,7 +9,6 @@ class BaseTest(TestCase):
 
     def create_app(self):
         app.config.from_object(app_config['testing'])
-        # app.config.from_pyfile('config.py')
         db.init_app(app)
         return app
 
