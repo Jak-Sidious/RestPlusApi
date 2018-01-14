@@ -50,7 +50,7 @@ class CategoryCreation(Resource):
         return {'message': 'Category successfully created'}, 201
 
 @api.route('/list')
-@api.marshal_list_with(category_list)
+# @api.marshal_list_with(category_list)
 class CategoryCollection(Resource):
     def get(self):
         """List all current categories"""
