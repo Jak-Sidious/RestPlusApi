@@ -23,9 +23,9 @@ pagination = api.model('A page of results', {
     'total': fields.Integer(description='Total number of results'),
 })
 
-category_list = api.inherit('Categories list', pagination, {
-    'items', fields.List(fields.Nested(category))
-})
+# category_list = api.inherit('Categories list', pagination, {
+#     'items', fields.List(fields.Nested(category))
+# })
 
 
 @api.route('/create')
