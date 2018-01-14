@@ -3,6 +3,7 @@
 from flask_bcrypt import Bcrypt
 from app import db
 
+from app.apis.models.recipie import Recipie
 
 import jwt
 from datetime import datetime, timedelta
@@ -19,8 +20,9 @@ class Category(db.Model):
     date_modified = db.Column(
         db.DateTime, default=db.func.current_timestamp(),
         onupdate=db.func.current_timestamp())
-    created_by = db.Column(db.Integer, db.ForeignKey('users.user_id'), nullable=False)
-    users = relationship("User", backref="categories")
+    user_id = db.Column(db.Integer, db.ForeignKey('users.user_id'), nullable=False)
+    recipies = db.relationship("Recipie", backref = "categories",
+                    lazy = 'dynamic')
 
 
     def __init__(self, category_name, category_description, created_by):
