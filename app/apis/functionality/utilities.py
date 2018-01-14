@@ -1,7 +1,7 @@
 # app/apis/functionality/utilities.py
 
 from app.models.user import User
-# from sqlalchemy.orm.exc import NoResultFound
+from app.models.category import Category
 
 
 from flask import jsonify
@@ -29,3 +29,15 @@ def user_login(data):
             access_token = user.generate_token(user.user_id)
             return access_token
     return access_token
+
+
+def create_category(data, user_id):
+    '''Method to to create a category'''
+    cat_name = data.get('category_name')
+    cat_desc = data.get('category_description')
+    if Category.query.filter_by(user_id=user_id, category_name=
+                                category_name).first() is not None:
+                                return {"message": "Category already exists"}, 409
+    new_cat = Category(cat_name, cat_desc, user_id)
+    new_cat.save()
+    return {"message": "Category successfully created"}, 201

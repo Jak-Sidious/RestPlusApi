@@ -3,9 +3,10 @@ import json
 from tests import BaseTest
 
 class UserTest(BaseTest):
-    """Ensure a user can be added to the database"""
-
+    """Tests for the user category"""
+    
     def test_registration_succesful(self):
+        """Ensure a user can be added to the database"""
         user_data = {
             "username": "testuser",
             "password": "testuser12345"

@@ -22,13 +22,13 @@ class UserRegistration(Resource):
     def post(self):
         """Registers a user """
         data = request.get_json()
-        # 
         username = data.get('username')
         password = data.get('password')
         user = User.query.filter_by(username=username).first()
         if user is None:
             user = User(username=username, password=password)
             user.save()
+            print(user.user_id)
             return {"message": "User succesfully registered"} , 201
         else:
             return {"message": "User already exists"}, 409

@@ -28,7 +28,7 @@ class Category(db.Model):
     def __init__(self, category_name, category_description, created_by):
         self.category_name = category_name
         self.category_description = category_description
-        self.created_by = created_by
+        self.user_id = created_by
 
     def save(self):
         # save a category

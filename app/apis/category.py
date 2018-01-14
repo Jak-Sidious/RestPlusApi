@@ -2,7 +2,7 @@ from flask import request
 from flask_restplus import Resource, Namespace, fields
 
 from app.models.category import Category
-# from ..functionality.serializers import category
+from .functionality.utilities import create_category
 
 api = Namespace('category', description='Category related functionality')
 
@@ -12,22 +12,37 @@ category = api.model('category', {
     'category_description' : fields.String(required=True, description='A description about the current category'),
     'date_created' : fields.DateTime(readOnly=True, description='Date Created'),
     'date_modified' : fields.DateTime(readOnly=True, description='Date modified'),
-    'created_by' : fields.Integer(readOnly=True, description='Which User created this nanka')
+    'user_id' : fields.Integer(readOnly=True, description='Which User created this nanka')
+
 })
 
-
 @api.route('/')
+@api.expect(category)
 class CategoryCollection(Resource):
     def get(self):
         """Returns a list of categories"""
         pass
 
-    @api.response(201, 'Category successfully created.')
-    @api.response(409, 'Conflict, Category already exists')
-    @api.expect(category)
+@api.route('/create')
+@api.response(201, 'Category successfully created.')
+@api.response(409, 'Conflict, Category already exists')
+@api.expect(category)
+class CategoryCreation(Resource):
     def post(self):
         """ Creates a new Category """
-        pass
+        data = request.get_json()
+        print(data)
+        categoryName = data.get('category_name')
+        categoryDesc = data.get('category_description')
+        user_id = data.get('user_id')
+        # user = User.query.filter_by(id = user_id).first()
+        if Category.query.filter_by(
+                    user_id=user_id,
+                    category_name=categoryName).first() is not None:
+                return {'message': 'Category already exists'}, 409
+        new_cat = Category(categoryName, categoryDesc, user_id)
+        new_cat.save()
+        return {'message': 'Category successfully created'}, 201
 
 @api.route('/<int:category_id>')
 @api.response(404, 'The Category you are querying does not exist.')
