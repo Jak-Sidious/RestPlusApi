@@ -39,10 +39,6 @@ class Category(db.Model):
         # tells python how to print objects of a class
         return '<Categoryname: {}'.format(self.category_name)
 
-    # @staticmethod
-    # def getall(Category.category_id):
-    #     """Return all category elements"""
-    #     return Category.query.all()
 
     def delete(self):
         """Delete an instance of the category class"""

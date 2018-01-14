@@ -16,12 +16,17 @@ category = api.model('category', {
 
 })
 
-@api.route('/')
-@api.expect(category)
-class CategoryCollection(Resource):
-    def get(self):
-        """Returns a list of categories"""
-        pass
+pagination = api.model('A page of results', {
+    'page': fields.Integer(description='Number of this page of results'),
+    'pages': fields.Integer(description='Total number of pages of results'),
+    'per_page': fields.Integer(description='Number of items per page of results'),
+    'total': fields.Integer(description='Total number of results'),
+})
+
+category_list = api.inherit('Categories list', pagination, {
+    'items' fields.List(fields.Nested(category))
+})
+
 
 @api.route('/create')
 @api.response(201, 'Category successfully created.')
@@ -43,6 +48,14 @@ class CategoryCreation(Resource):
         new_cat = Category(categoryName, categoryDesc, user_id)
         new_cat.save()
         return {'message': 'Category successfully created'}, 201
+
+@api.route('/list')
+@api.marshal_list_with(category_list)
+class CategoryCollection(Resource):
+    def get(self):
+        """List all current categories"""
+        pass
+
 
 @api.route('/<int:category_id>')
 @api.response(404, 'The Category you are querying does not exist.')
