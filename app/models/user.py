@@ -2,7 +2,7 @@
 from flask_restplus import Namespace, Resource, fields
 from flask_bcrypt import Bcrypt
 from app import db
-from app.apis.models.category import Category
+from app.models.category import Category
 import jwt
 from datetime import datetime, timedelta
 

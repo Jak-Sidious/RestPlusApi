@@ -3,7 +3,7 @@
 from flask_bcrypt import Bcrypt
 from app import db
 
-from app.apis.models.recipie import Recipie
+from app.models.recipie import Recipie
 
 import jwt
 from datetime import datetime, timedelta

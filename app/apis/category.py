@@ -1,10 +1,20 @@
 from flask import request
-from flask_restplus import Resource, Namespace
+from flask_restplus import Resource, Namespace, fields
 
-# from app.apis.models.category import Category
-from ..functionality.serializers import category
+from app.models.category import Category
+# from ..functionality.serializers import category
 
 api = Namespace('category', description='Category related functionality')
+
+category = api.model('category', {
+    'category_id' : fields.Integer(readOnly=True, description='category unique identifier'),
+    'category_name' : fields.String(required=True, description='category name'),
+    'category_description' : fields.String(required=True, description='A description about the current category'),
+    'date_created' : fields.DateTime(readOnly=True, description='Date Created'),
+    'date_modified' : fields.DateTime(readOnly=True, description='Date modified'),
+    'created_by' : fields.Integer(readOnly=True, description='Which User created this nanka')
+})
+
 
 @api.route('/')
 class CategoryCollection(Resource):

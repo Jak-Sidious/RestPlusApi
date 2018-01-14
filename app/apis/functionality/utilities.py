@@ -1,6 +1,6 @@
 # app/apis/functionality/utilities.py
 
-from app.apis.models.user import User
+from app.models.user import User
 # from sqlalchemy.orm.exc import NoResultFound
 
 
@@ -14,6 +14,7 @@ def register_user(data):
     if user is None:
         user = User(username=username, password=password)
         user.save()
+    return {"message": "User succesfully registered"} , 201
 
         
 def user_login(data):
