@@ -24,7 +24,7 @@ pagination = api.model('A page of results', {
 })
 
 category_list = api.inherit('Categories list', pagination, {
-    'items' fields.List(fields.Nested(category))
+    'items', fields.List(fields.Nested(category))
 })
 
 
