@@ -11,6 +11,7 @@ Flask==0.12.2
 Flask-API==1.0
 Flask-Bcrypt==0.7.1
 flask-blueprint==1.2.2
+Flask-JWT-Extended==3.6.0
 Flask-Migrate==2.1.1
 flask-restplus==0.10.1
 Flask-Script==2.0.6
@@ -30,6 +31,7 @@ psycopg2==2.7.3.2
 py==1.5.2
 pyasn1==0.4.2
 pycparser==2.18
+PyJWT==1.5.3
 pytest==3.3.1
 pytest-cov==2.5.1
 python-dateutil==2.6.1

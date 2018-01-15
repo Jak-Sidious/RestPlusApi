@@ -2,6 +2,9 @@
 
 from app.models.user import User
 from app.models.category import Category
+from flask_jwt_extended import (
+    jwt_required, create_access_token,get_jwt_identity
+    )
 
 
 from flask import jsonify
@@ -26,10 +29,8 @@ def user_login(data):
         return {"message": "User not registered"}, 404
     else:
         if user.password_is_valid(password):
-            access_token = user.generate_token(user.user_id)
-            return access_token
-    return access_token
-
+            access_token = create_access_token(identity=user.user_id)
+            return {"token": access_token}
 
 def create_category(data, user_id):
     '''Method to to create a category'''

@@ -54,7 +54,11 @@ class CategoryCollection(Resource):
     @api.marshal_list_with(category_list)
     def get(self):
         """List all current categories"""
-        pass
+        data = request.get_json()
+        user_id = data.get('user_id')
+
+        #create baseQuery onject to allow for pagination
+        the_cats = Category.query.filter_by(user_id=user_id)
 
 
 @api.route('/<int:category_id>')

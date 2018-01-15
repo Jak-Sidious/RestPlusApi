@@ -1,5 +1,9 @@
 from flask import request, json
 from flask_restplus import Resource, Namespace, fields
+from flask_jwt_extended import (
+    jwt_required, create_access_token,get_jwt_identity
+    )
+
 
 # /Users/jakanakiwanuka/work/RestplusDemo/app/app/apis/models/user.py
 from app.models.user import User
@@ -29,6 +33,7 @@ class UserRegistration(Resource):
             user = User(username=username, password=password)
             user.save()
             print(user.user_id)
+            
             return {"message": "User succesfully registered"} , 201
         else:
             return {"message": "User already exists"}, 409
@@ -42,6 +47,7 @@ class UserLogin(Resource):
     def post(self):
         """Logs in a regestered user"""
         data = request.get_json()
-        user_login(data)
-        return {"message": "User succesfully Loged in"}, 200
+        message = user_login(data)
+        return {"message": message,
+                "response": "User sucessfully Loged in"}, 200
     

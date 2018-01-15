@@ -26,14 +26,6 @@ class User(db.Model):
         self.username = username
         self.password = Bcrypt().generate_password_hash(password).decode()
 
-    # def password_hasher(self, password):
-    #     ''' hashes the password '''
-    #     self.password = Bcrypt().generate_password_hash(password).decode('utf-8')
-
-    # def password_checker(self, password):
-    #     ''' check if hashed password and password match '''
-    #     return Bcrypt().check_password_hash(self.password, password)
-
     def password_is_valid(self, password):
         """
         Checks the password againts it's hash to validate the user's password
@@ -44,40 +36,6 @@ class User(db.Model):
         """Method to save instances of the User class in the database"""
         db.session.add(self)
         db.session.commit()
-
-    def generate_token(self, user_id):
-        """Generates the access token"""
-
-        try:
-            # set up a payload with an expiration time
-            payload = {
-                'exp': datetime.utcnow() + timedelta(days=30),
-                'iat': datettime.utcnow(),
-                'sub': user_id
-            }
-            #create the byte string token using payload and secret key
-            jwt_string = jwt.encode(
-                payload,
-                current_app.config.get('SECRET_KEY'),
-                algorithm = 'HS256'
-            )
-            return jwt_string
-        except Exception as e:
-            # return n error in tring format if an exception occurs
-            return str(e)
-
-    @staticmethod
-    def decode_token(token):
-        """Decodes the access token from the Authorization header."""
-        try:
-            payload = jwt.decode(token, current_app.config.get('SECRET_KEY'))
-            return payload['sub']
-        except jwt.ExpiredSignatureError:
-            # The token is expired return an error string
-            return "Expired token, Please login to get a new token"
-        except jwt.InvalidTokenError:
-            # the token is invalid, return an error string
-            return "Invalid token. Please register or login"
 
     def __repr__(self):
         return '<User: {}'.format(self.username)
