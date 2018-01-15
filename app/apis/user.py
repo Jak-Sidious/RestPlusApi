@@ -8,7 +8,7 @@ from flask_jwt_extended import (
 # /Users/jakanakiwanuka/work/RestplusDemo/app/app/apis/models/user.py
 from app.models.user import User
 # from .functionality.serializers import usah
-from .functionality.utilities import register_user, user_login
+
 
 api = Namespace('users', description='User sign up and login operations')
 
@@ -47,7 +47,15 @@ class UserLogin(Resource):
     def post(self):
         """Logs in a regestered user"""
         data = request.get_json()
-        message = user_login(data)
-        return {"message": message,
-                "response": "User sucessfully Loged in"}, 200
+
+        username = data.get('username')
+        password = data.get('password')
+        user = User.query.filter_by(username=username).first()
+        if user is None:
+            return {"message": "User not registered"}, 404
+        else:
+            if user.password_is_valid(password):
+                access_token = create_access_token(identity=user.user_id)
+                return {"token": access_token,
+                        "response": "User sucessfully Loged in"}, 200
     

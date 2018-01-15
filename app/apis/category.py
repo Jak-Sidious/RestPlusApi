@@ -1,8 +1,10 @@
 from flask import request
 from flask_restplus import Resource, Namespace, fields
+from flask_jwt_extended import jwt_required, get_jwt_identity
 
 from app.models.category import Category
-from .functionality.utilities import create_category
+from app.apis.functionality.parsers import pagination_args
+
 
 api = Namespace('category', description='Category related functionality')
 
@@ -29,10 +31,12 @@ category_list = api.inherit('Category list', pagination, {
 
 
 @api.route('/create')
+
 @api.response(201, 'Category successfully created.')
 @api.response(409, 'Conflict, Category already exists')
 @api.expect(category)
 class CategoryCreation(Resource):
+    @jwt_required
     def post(self):
         """ Creates a new Category """
         data = request.get_json()
@@ -50,15 +54,32 @@ class CategoryCreation(Resource):
         return {'message': 'Category successfully created'}, 201
 
 @api.route('/list')
+
 class CategoryCollection(Resource):
+    
     @api.marshal_list_with(category_list)
+    @jwt_required
     def get(self):
         """List all current categories"""
-        data = request.get_json()
-        user_id = data.get('user_id')
+        user_id = get_jwt_identity()
+        print(user_id)
+        args = pagination_args.parse_args(request)
+        query = args.get('q')
+        page = args.get('page', 1)
+        per_page = args.get('per_page', 10)
 
-        #create baseQuery onject to allow for pagination
-        the_cats = Category.query.filter_by(user_id=user_id)
+        if query is None:
+            category_query = Category.query
+        else:
+            category_query = Category.query.filter(Category.name.like("%"+query+"%"))
+
+        categories_page = category_query.paginate(page, per_page,
+                    error_out = False)
+        
+        return categories_page
+
+
+
 
 
 @api.route('/<int:category_id>')
