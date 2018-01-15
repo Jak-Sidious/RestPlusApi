@@ -8,7 +8,7 @@ from .recipie import api as ns3
 apiv1_bp = Blueprint('apiv1', __name__)
 
 api = Api(apiv1_bp,
-    title='My title',
+    title='My RestPlus Yummy API documentation',
     version='1.0',
     description='An api to create, read, update and delete recipes'
 )

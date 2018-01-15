@@ -23,9 +23,9 @@ pagination = api.model('A page of results', {
     'total': fields.Integer(description='Total number of results'),
 })
 
-# category_list = api.inherit('Categories list', pagination, {
-#     'items', fields.List(fields.Nested(category))
-# })
+category_list = api.inherit('Category list', pagination, {
+    'items':fields.List(fields.Nested(category))
+})
 
 
 @api.route('/create')
@@ -50,8 +50,8 @@ class CategoryCreation(Resource):
         return {'message': 'Category successfully created'}, 201
 
 @api.route('/list')
-# @api.marshal_list_with(category_list)
 class CategoryCollection(Resource):
+    @api.marshal_list_with(category_list)
     def get(self):
         """List all current categories"""
         pass
