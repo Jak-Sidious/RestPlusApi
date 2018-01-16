@@ -17,17 +17,17 @@ class User(db.Model):
     username = db.Column(db.String(50), nullable=False, unique=True)
     password = db.Column(db.String(256), nullable=False)
     #to do here
-    # email = db.Column(db.String(256), nullable=False, unique=True, default='sample@sample.com')
+    email = db.Column(db.String(256), nullable=False, unique=True, default='sample@sample.com')
     categories = db.relationship("Category", backref = "users",
                     lazy = 'dynamic')
 
 
     #todo modify user model to incorporate more unique identifiers 
-    def __init__(self, username, password):
+    def __init__(self, username, password, email):
         ''' Initialise the user with a username '''
         self.username = username
         self.password = Bcrypt().generate_password_hash(password).decode()
-        # self.email = email
+        self.email = email
 
     def password_is_valid(self, password):
         """

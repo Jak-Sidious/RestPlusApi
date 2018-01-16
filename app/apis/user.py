@@ -14,7 +14,8 @@ api = Namespace('users', description='User sign up and login operations')
 
 usah = api.model('users', {
     'username' : fields.String(required=True, description='unique name for a user'),
-    'password' : fields.String(required=True, description='password required to grant a user access')
+    'password' : fields.String(required=True, description='password required to grant a user access'),
+    'email' : fields.String(required=True, description='email required for a user')
 })
 
 @api.route('/register')
@@ -28,9 +29,10 @@ class UserRegistration(Resource):
         data = request.get_json()
         username = data.get('username')
         password = data.get('password')
+        email = data.get('email')
         user = User.query.filter_by(username=username).first()
         if user is None:
-            user = User(username=username, password=password)
+            user = User(username=username, password=password, email=email)
             user.save()
             
             return {"message": "User succesfully registered"} , 201

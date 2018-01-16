@@ -9,7 +9,8 @@ class UserTest(BaseTest):
         """Ensure a user can be added to the database"""
         user_data = {
             "username": "testuser",
-            "password": "testuser12345"
+            "password": "testuser12345",
+            "email": "test@test.com"
         }
         response = self.app.post("/apiv1/users/register", data=json.dumps(user_data), content_type="application/json")
         msg = json.loads(response.data)
@@ -23,6 +24,7 @@ class UserTest(BaseTest):
             "password": "testuser12345"
         }
         response = self.app.post("/apiv1/users/login", data=json.dumps(user_data), content_type="application/json")
+        print (response)
         msg = json.loads(response.data)
 
         self.assertIn(msg['message'], 'User not registered')

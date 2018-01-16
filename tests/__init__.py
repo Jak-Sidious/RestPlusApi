@@ -2,10 +2,6 @@ from manage import app
 from app import  db, app_config
 from flask_testing import TestCase
 
-#imports to enable use of Model
-
-from app.models.recipie import Recipie
-
 class BaseTest(TestCase):
 
     def create_app(self):
