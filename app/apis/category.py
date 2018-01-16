@@ -10,13 +10,8 @@ from app.apis.recipie import recipe
 api = Namespace('category', description='Category related functionality')
 
 category = api.model('category', {
-    'category_id' : fields.Integer(readOnly=True, description='category unique identifier'),
     'category_name' : fields.String(required=True, description='category name'),
-    'category_description' : fields.String(required=True, description='A description about the current category'),
-    'date_created' : fields.DateTime(readOnly=True, description='Date Created'),
-    'date_modified' : fields.DateTime(readOnly=True, description='Date modified'),
-    'user_id' : fields.Integer(readOnly=True, description='Which User created this nanka')
-
+    'category_description' : fields.String(required=True, description='A description about the current category')
 })
 
 pagination = api.model('A page of results', {
@@ -42,20 +37,20 @@ class CategoryCollection(Resource):
     def get(self):
         """List all current categories"""
 
-        args = pagination_args.parse_args(request)
-        query = args.get('q')
-        page = args.get('page', 1)
-        per_page = args.get('per_page', 10)
+        # args = pagination_args.parse_args(request)
+        # query = args.get('q')
+        # page = args.get('page', 1)
+        # per_page = args.get('per_page', 10)
 
-        if query is None:
-            category_query = Category.query
-        else:
-            category_query = Category.query.filter(Categories.name.like("%"+query+"%"))
+        # if query is None:
+        #     category_query = Category.query
+        # else:
+        #     category_query = Category.query.filter(Categories.name.like("%"+query+"%"))
 
-        categories_page = category_query.paginate(page, per_page,
-                    error_out = False)
+        # categories_page = category_query.paginate(page, per_page,
+        #             error_out = False)
         
-        return categories_page
+        # return categories_page
 
 @api.route('/create')
 
@@ -70,8 +65,7 @@ class CategoryCreation(Resource):
         print(data)
         categoryName = data.get('category_name')
         categoryDesc = data.get('category_description')
-        user_id = data.get('user_id')
-        # user = User.query.filter_by(id = user_id).first()
+        user_id = get_jwt_identity()
         if Category.query.filter_by(
                     user_id=user_id,
                     category_name=categoryName).first() is not None:

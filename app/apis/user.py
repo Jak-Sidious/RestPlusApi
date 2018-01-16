@@ -1,7 +1,7 @@
 from flask import request, json
 from flask_restplus import Resource, Namespace, fields
 from flask_jwt_extended import (
-    jwt_required, create_access_token,get_jwt_identity, get_raw_jwt
+    jwt_required, create_access_token, get_jwt_identity, get_raw_jwt
     )
 
 
@@ -57,7 +57,7 @@ class UserLogin(Resource):
 
         username = data.get('username')
         password = data.get('password')
-        email = data.get('email')
+        # email = data.get('email')
         user = User.query.filter_by(username=username).first()
         if user is None:
             return {"message": "User not registered"}, 404
@@ -74,7 +74,7 @@ class UserLogout(Resource):
     def delete(self):
         pass
 
-@api.rpute('/reset_password')
+@api.route('/reset_password')
 class PasswordReset(Resource):
     @api.response(200, 'Password reset successfully')
     @jwt_required
