@@ -11,6 +11,19 @@ class BaseTest(TestCase):
 
     def setUp(self):
         self.app = self.create_app().test_client()
+        self.reg_data = {
+            "username": "testuser",
+            "password": "testuser12345",
+            "email": "test@test.com"
+        }
+        self.login_data = {
+            "username": "testuser",
+            "password": "testuser12345"
+        }
+        self.wrong_data ={
+            "username": "testing",
+            "password": "testuser12345"
+        }
         db.create_all()
 
     def tearDown(self):
