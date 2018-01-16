@@ -25,5 +25,5 @@ class UserTest(BaseTest):
         response = self.app.post("/apiv1/users/login", data=json.dumps(user_data), content_type="application/json")
         msg = json.loads(response.data)
 
-        self.assertIn(msg['message'], 'User succesfully Loged in')
-        self.assertEqual(response.status_code, 200)
+        self.assertIn(msg['message'], 'User not registered')
+        self.assertEqual(response.status_code, 404)

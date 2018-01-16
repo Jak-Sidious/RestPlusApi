@@ -16,6 +16,8 @@ class User(db.Model):
     user_id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     username = db.Column(db.String(50), nullable=False, unique=True)
     password = db.Column(db.String(256), nullable=False)
+    #to do here
+    # email = db.Column(db.String(256), nullable=False, unique=True, default='sample@sample.com')
     categories = db.relationship("Category", backref = "users",
                     lazy = 'dynamic')
 
@@ -25,6 +27,7 @@ class User(db.Model):
         ''' Initialise the user with a username '''
         self.username = username
         self.password = Bcrypt().generate_password_hash(password).decode()
+        # self.email = email
 
     def password_is_valid(self, password):
         """

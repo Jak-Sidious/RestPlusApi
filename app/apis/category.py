@@ -4,6 +4,7 @@ from flask_jwt_extended import jwt_required, get_jwt_identity
 
 from app.models.category import Category
 from app.apis.functionality.parsers import pagination_args
+from app.apis.recipie import recipe
 
 
 api = Namespace('category', description='Category related functionality')
@@ -29,6 +30,32 @@ category_list = api.inherit('Category list', pagination, {
     'items':fields.List(fields.Nested(category))
 })
 
+category_n_recipes = api.inherit('Category and associated recipies', category, {
+    'recipes': fields.List(fields.Nested(recipe, required=True))
+})
+
+@api.route('/list')
+class CategoryCollection(Resource):
+    
+    @api.marshal_list_with(category_list)
+    @jwt_required
+    def get(self):
+        """List all current categories"""
+
+        args = pagination_args.parse_args(request)
+        query = args.get('q')
+        page = args.get('page', 1)
+        per_page = args.get('per_page', 10)
+
+        if query is None:
+            category_query = Category.query
+        else:
+            category_query = Category.query.filter(Categories.name.like("%"+query+"%"))
+
+        categories_page = category_query.paginate(page, per_page,
+                    error_out = False)
+        
+        return categories_page
 
 @api.route('/create')
 
@@ -53,41 +80,17 @@ class CategoryCreation(Resource):
         new_cat.save()
         return {'message': 'Category successfully created'}, 201
 
-@api.route('/list')
-
-class CategoryCollection(Resource):
-    
-    @api.marshal_list_with(category_list)
-    @jwt_required
-    def get(self):
-        """List all current categories"""
-        user_id = get_jwt_identity()
-        print(user_id)
-        args = pagination_args.parse_args(request)
-        query = args.get('q')
-        page = args.get('page', 1)
-        per_page = args.get('per_page', 10)
-
-        if query is None:
-            category_query = Category.query
-        else:
-            category_query = Category.query.filter(Category.name.like("%"+query+"%"))
-
-        categories_page = category_query.paginate(page, per_page,
-                    error_out = False)
-        
-        return categories_page
-
-
 
 
 
 @api.route('/<int:category_id>')
 @api.response(404, 'The Category you are querying does not exist.')
 class CategoryItem(Resource):
+    @api.marshal_list_with(category_n_recipes)
+    @jwt_required
     def get(self, category_id):
         """Returns a particular category"""
-        pass
+        # return Category.query.filter(Category.category_id=category_id).one()
 
     @api.response(204, 'Category successfully updated.')
     @api.response(404, "Not Found, Category doesn't exist")

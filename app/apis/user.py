@@ -32,7 +32,6 @@ class UserRegistration(Resource):
         if user is None:
             user = User(username=username, password=password)
             user.save()
-            print(user.user_id)
             
             return {"message": "User succesfully registered"} , 201
         else:
