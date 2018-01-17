@@ -12,7 +12,7 @@ from app.apis.recipie import recipe
 
 api = Namespace('category', description='Category related functionality')
 
-category = api.model('category', {
+edit_category = api.model('edit category', {
     'category_name' : fields.String(required=True, description='category name'),
     'category_description' : fields.String(required=True, description='A description about the current category')
 })
@@ -55,7 +55,7 @@ class CategoryCreation(Resource):
     @jwt_required
     @api.response(201, 'Category successfully created.')
     @api.response(409, 'Conflict, Category already exists')
-    @api.expect(category)
+    @api.expect(edit_category)
     def post(self):
         """ Creates a new Category """
         data = request.get_json()
@@ -94,6 +94,7 @@ class CategoryItem(Resource):
     @api.response(404, "Not Found, Category doesn't exist")
     @api.response(403, "Forbidden, You don't own this category")
     @jwt_required
+    @api.expect(edit_category)
     def put(self, category_id):
         """ Updates an existing category """
         pass
