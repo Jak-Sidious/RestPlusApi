@@ -1,5 +1,5 @@
-from manage import app
-from app import  db, app_config
+from manage import app, db, app_config
+# from app import  
 from flask_testing import TestCase
 
 class BaseTest(TestCase):
