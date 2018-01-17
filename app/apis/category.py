@@ -49,13 +49,13 @@ class CategoryCollection(Resource):
 
         return marshal(paginated, category_list)
 
-@api.route('/create')
 
-@api.response(201, 'Category successfully created.')
-@api.response(409, 'Conflict, Category already exists')
-@api.expect(category)
+@api.route('/create')
 class CategoryCreation(Resource):
     @jwt_required
+    @api.response(201, 'Category successfully created.')
+    @api.response(409, 'Conflict, Category already exists')
+    @api.expect(category)
     def post(self):
         """ Creates a new Category """
         data = request.get_json()
@@ -110,4 +110,5 @@ class CategoryItem(Resource):
         if the_cat is not None:
             db.session.delete(the_cat)
             db.session.commit()
-            return {'message': 'Category successfully deleted'}, 204
+            return {'message': 'Category successfully deleted.'}, 204
+        return {'message' : 'Not Found, Category does not exixt'}, 404
