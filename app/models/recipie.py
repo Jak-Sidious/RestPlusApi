@@ -17,8 +17,8 @@ class Recipie(db.Model):
     # created_by = db.Column(db.Integer, db.ForeignKey('users.user_id'), nullable = False )
     category_id = db.Column(db.Integer, db.ForeignKey('categories.category_id'), nullable=False)
     # attached_category = db.Column(db.Integer, db.ForeignKey('categories.category_id'), nullable = False)
-    date_created = db.Column(db.DateTime(), default=datetime.now)
-    date_modified = db.Column(db.DateTime(), default=datetime.now)
+    date_created = db.Column(db.DateTime(), default=datetime.utcnow())
+    date_modified = db.Column(db.DateTime(), default=datetime.utcnow())
 
     def init(self, recipie_id, recipie_name, ingredients, created_by, attached_category):
         """ Initalise a recipie with a name, ingredients, created by 

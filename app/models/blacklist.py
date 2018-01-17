@@ -1,7 +1,7 @@
 from datetime import datetime
 from flask_restplus import Namespace, Resource, fields
 from app import db
-import jwt
+
 
 
 class Blacklist(db.Model):

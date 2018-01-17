@@ -13,7 +13,7 @@ from app.models.blacklist import Blacklist
 
 api = Namespace('users', description='User sign up and login operations')
 
-usah = api.model('users', {
+user_signup = api.model('user signup', {
     'username' : fields.String(required=True, description='unique name for a user'),
     'password' : fields.String(required=True, description='password required to grant a user access'),
     'email' : fields.String(required=True, description='email required for a user')
@@ -29,7 +29,7 @@ class UserRegistration(Resource):
 
     @api.response(201, 'User succesfully Registered')
     @api.response(409, 'Conflict, User already exists')
-    @api.expect(usah)
+    @api.expect(user_signup)
     def post(self):
         """Registers a user """
         data = request.get_json()

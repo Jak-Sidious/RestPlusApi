@@ -16,10 +16,10 @@ class Category(db.Model):
     category_id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     category_name = db.Column(db.String(50), nullable=False, unique=True)
     category_description = db.Column(db.String(256), nullable=False)
-    date_created = db.Column(db.DateTime, default=db.func.current_timestamp())
+    date_created = db.Column(db.DateTime, default=datetime.utcnow())
     date_modified = db.Column(
-        db.DateTime, default=db.func.current_timestamp(),
-        onupdate=db.func.current_timestamp())
+        db.DateTime, default=datetime.utcnow(),
+        onupdate=datetime.utcnow())
     user_id = db.Column(db.Integer, db.ForeignKey('users.user_id'), nullable=False)
     recipies = db.relationship("Recipie", backref = "categories",
                     lazy = 'dynamic')
