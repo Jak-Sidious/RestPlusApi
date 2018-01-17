@@ -16,6 +16,8 @@ def create_app(config_name):
     app.config.from_pyfile('config.py')
     db.init_app(app)
     jwt.init_app(app)
+
+    
     from app.apis import apiv1_bp
     app.register_blueprint(apiv1_bp , url_prefix='/apiv1')
     return app
