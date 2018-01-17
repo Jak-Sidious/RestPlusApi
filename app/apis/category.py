@@ -91,17 +91,26 @@ class CategoryItem(Resource):
         
 
     @api.response(204, 'Category successfully updated.')
-    @api.response(404, "Not Found, Category doesn't exist")
+    @api.response(404, "No such category exists")
     @api.response(403, "Forbidden, You don't own this category")
     @jwt_required
     @api.expect(edit_category)
     def put(self, category_id):
         """ Updates an existing category """
-        pass
+        edit_cat = Category.query.filter_by(category_id=category_id).first()
+        print (edit_cat)
+        if edit_cat is None:
+            return {'message': 'No such category exists'}, 404
+        data = request.get_json()
+        print (data)
+        edit_cat.category_name = data.get['category_name']
+        edit_cat.category_description = data.get['category_description']
+        db.session.add(edit_cat)
+        db.session.commit()
+        return {'message': 'Category successfully updated'}
 
     @api.response(204, 'Category successfully deleted.')
     @api.response(404, 'Not Found, Category does not exixt')
-    @api.response(403, "Forbidden, You don't own this category")
     @jwt_required
     def delete(self, category_id):
         """Deletes an existing Category"""

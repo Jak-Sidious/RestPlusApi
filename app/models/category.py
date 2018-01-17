@@ -37,7 +37,7 @@ class Category(db.Model):
 
     def __repr__(self):
         # tells python how to print objects of a class
-        return '<Categoryname: {}>'.format(self.category_name)
+        return '<Category name: {}>'.format(self.category_name)
 
 
     def delete(self):

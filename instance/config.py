@@ -14,6 +14,7 @@ class Config(object):
 class DevelopmentConfig(Config):
     """Configurations for Development. """
     DEBUG = True
+    RESTPLUS_VALIDATE = True
 
 
 class TestingConfig(Config):
@@ -21,7 +22,6 @@ class TestingConfig(Config):
     TESTING = True
     # path to database
     SQLALCHEMY_DATABASE_URI = 'postgresql:///testing_db'
-    # SQLALCHEMY_TRACK_MODIFICATIONS = False
     DEBUG = False
 
 class ProductionConfig(Config):
