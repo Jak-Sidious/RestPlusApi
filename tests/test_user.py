@@ -35,10 +35,10 @@ class UserTest(BaseTest):
         
 
 
-    def test_valid_logout(self):
-        ''' Test for logout '''
-        pass
+    # def test_valid_logout(self):
+    #     ''' Test for logout '''
+    #     pass
 
-    def test_reset_password(self):
-        ''' Test for password reset'''
-        pass
+    # def test_reset_password(self):
+    #     ''' Test for password reset'''
+    #     pass
