@@ -1,6 +1,9 @@
 language: python
 python:
-  - 3.6
+  - 3.6.3
+
+services:
+  - postgresql
 
 install:
   - pip install -r requirements.txt
@@ -11,7 +14,7 @@ before_script:
   - psql -c 'CREATE DATABASE testing_db;' -U postgres
 
 script:
-  - nosetests --with-coverage --cover-package=tests
+  - nose2 --with-coverage --cover-package=tests
   
 after_success:
   - coveralls
