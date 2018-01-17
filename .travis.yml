@@ -14,7 +14,7 @@ before_script:
   - psql -c 'CREATE DATABASE testing_db;' -U postgres
 
 script:
-  - nose2 --with-coverage --cover-package=tests
+  - - nose2 --with-cov --coverage tests
   
 after_success:
   - coveralls
