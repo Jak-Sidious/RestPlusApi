@@ -17,6 +17,7 @@ category = api.model('category', {
 })
 
 category_list = api.model('category', {
+    'category_id': fields.Integer(readOnly =True, description='Unique identifier for each category'),
     'category_name' : fields.String(required=True, description='category name'),
     'category_description' : fields.String(required=True, description='A description about the current category'),
     'date_created' : fields.DateTime(readOnly=True, description = 'Date created'),
@@ -24,7 +25,7 @@ category_list = api.model('category', {
     'user_id' : fields.Integer(readOnly = True, description='User that made the category')
 })
 
-category_n_recipes = api.inherit('Category and associated recipies', category, {
+category_n_recipes = api.inherit('Category and associated recipies', category_list, {
     'recipes': fields.List(fields.Nested(recipe, required=True))
 })
 
@@ -70,23 +71,28 @@ class CategoryCreation(Resource):
         return {'message': 'Category successfully created'}, 201
 
 
-
-
 @api.route('/<int:category_id>')
 @api.response(404, 'The Category you are querying does not exist.')
 class CategoryItem(Resource):
     '''Functionality for the viewing, updating and deleting of a 
     particular category
     '''
+
+    @api.response(200, 'Category found successfully')
     @api.marshal_list_with(category_n_recipes)
     @jwt_required
     def get(self, category_id):
         """Returns a particular category"""
-        # return Category.query.filter(Category.category_id=category_id).one()
+        response = Category.query.filter_by(category_id=category_id).first()
+        if response is None:
+            return {'message': 'The Category you are querying does not exist.'}, 404
+        return marshal(response, category_n_recipes)
+        
 
     @api.response(204, 'Category successfully updated.')
     @api.response(404, "Not Found, Category doesn't exist")
     @api.response(403, "Forbidden, You don't own this category")
+    @jwt_required
     def put(self, category_id):
         """ Updates an existing category """
         pass
@@ -94,6 +100,7 @@ class CategoryItem(Resource):
     @api.response(204, 'Category successfully deleted.')
     @api.response(404, 'Not Found, Category does not exixt')
     @api.response(403, "Forbidden, You don't own this category")
+    @jwt_required
     def delete(self, category_id):
         """Deletes an existing Category"""
         pass
