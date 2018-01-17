@@ -2,6 +2,7 @@ from flask import request
 from flask_restplus import Resource, Namespace, fields, marshal
 from flask_jwt_extended import jwt_required, get_jwt_identity
 
+from app import db
 from app.models.user import User
 from app.models.category import Category
 from app.apis.functionality.parsers import pagination_args
@@ -103,4 +104,10 @@ class CategoryItem(Resource):
     @jwt_required
     def delete(self, category_id):
         """Deletes an existing Category"""
-        pass
+        the_cat = Category.query.filter_by(category_id=category_id).first()
+        print (the_cat)
+
+        if the_cat is not None:
+            db.session.delete(the_cat)
+            db.session.commit()
+            return {'message': 'Category successfully deleted'}, 204
