@@ -59,7 +59,6 @@ class CategoryCreation(Resource):
     def post(self):
         """ Creates a new Category """
         data = request.get_json()
-        print(data)
         categoryName = data.get('category_name')
         categoryDesc = data.get('category_description')
         user_id = get_jwt_identity()

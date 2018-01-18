@@ -1,5 +1,5 @@
-from manage import app, db, app_config
-# from app import  
+from manage import app
+from app import  db, app_config
 from flask_testing import TestCase
 
 class BaseTest(TestCase):
@@ -23,6 +23,10 @@ class BaseTest(TestCase):
         self.wrong_data ={
             "username": "testing",
             "password": "testuser12345"
+        }
+        self.category_data = {
+            "category_name": "test category",
+            "category_description" : "Test description"
         }
         db.create_all()
 
