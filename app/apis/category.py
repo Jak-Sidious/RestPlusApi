@@ -95,7 +95,8 @@ class CategoryItem(Resource):
     @api.expect(edit_category)
     def put(self, category_id):
         """ Updates an existing category """
-        edit_cat = Category.query.filter_by(category_id=category_id).first()
+        user_id = get_jwt_identity()
+        edit_cat = Category.query.filter_by(user_id=user_id, category_id=category_id).first()
         print (edit_cat)
         if edit_cat is None:
             return {'message': 'No such category exists'}, 404
@@ -112,7 +113,8 @@ class CategoryItem(Resource):
     @jwt_required
     def delete(self, category_id):
         """Deletes an existing Category"""
-        the_cat = Category.query.filter_by(category_id=category_id).first()
+        user_id = get_jwt_identity()
+        the_cat = Category.query.filter_by(user_id=user_id, category_id=category_id).first()
         print (the_cat)
 
         if the_cat is not None:

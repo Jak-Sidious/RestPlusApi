@@ -48,9 +48,14 @@ pagination = api.model('A page of results', {
 
 @api.route('/list')
 class RecipieCollection(Resource):
+    @api.marshall_list_with(category_list)
+    @jwt_required
     def get(self):
         """Returns a list of Recipies for a particular category"""
-        pass
+        user_identity = get_jwt_identity()
+        #create base query object
+        listed = Recipie.query.filter_by(user_id=user_identity).first()
+        print (listed)
 
 @api.route('/create')
 class RecipieCreation(Resource):
