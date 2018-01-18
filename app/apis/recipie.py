@@ -1,10 +1,16 @@
 from flask import request
 from flask_restplus import Resource, Namespace, fields
+from flask_jwt_extended import jwt_required, get_jwt_identity
 
 from app.models.recipie import Recipie
+
+# from app.models.category import Category
+# from app.models.recipie import Recipie
 # from ..functionality.serializers import recipe
 
-api = Namespace('recipie', description='Recipie related functionality')
+api = Namespace('recipie', 
+                description='Recipie related functionality',
+                path='/category/<int:category_id>/recipe')
 
 recipe = api.model('recipie', {
     'recipie_id' : fields.Integer(readOnly=True, description='recipie unique identifier'),
@@ -16,6 +22,22 @@ recipe = api.model('recipie', {
     'date_modified' : fields.DateTime(readOnly=True, description='Date modified')
 })
 
+recipie_data = api.model('create recipie', {
+    'recipie_name': fields.String(required=True, description='Name of the current recipe'),
+    'ingedients': fields.String(required=True, description='The ingredients for this recipie')
+})
+
+category_list = api.model('category', {
+    'user_id' : fields.Integer(readOnly = True, description='User that made the category'),
+    'category_id': fields.Integer(readOnly =True, description='Unique identifier for each category'),
+    'category_name' : fields.String(required=True, description='category name'),
+    'category_description' : fields.String(required=True, description='A description about the current category'),
+    'date_created' : fields.DateTime(readOnly=True, description = 'Date created'),
+    'date_modified' : fields.DateTime(readOnnly=True, description = 'date modified'),
+    'recipies' : fields.String(readOnly = True, description='Recipies belonging to a certain category')
+    
+})
+
 pagination = api.model('A page of results', {
     'page': fields.Integer(description='Number of this page of results'),
     'pages': fields.Integer(description='Total number of pages of results'),
@@ -24,18 +46,37 @@ pagination = api.model('A page of results', {
 })
 
 
-@api.route('/')
+@api.route('/list')
 class RecipieCollection(Resource):
     def get(self):
-        """Returns a list of Recipies"""
+        """Returns a list of Recipies for a particular category"""
         pass
 
+@api.route('/create')
+class RecipieCreation(Resource):
     @api.response(201, 'Category successfully created.')
     @api.response(409, 'Conflict, Category already exists')
-    @api.expect(recipe)
-    def post(self):
+    @api.expect(recipie_data)
+    @jwt_required
+    def post(self, category_id):
         """ Creates a new Recipie """
-        pass
+        data = request.get_json()
+        rec_name = data.get('recipie_name')
+        ingedients = data.get('ingedients')
+        user_id = get_jwt_identity()
+        category_id = category_id 
+        if Recipie.query.filter_by(
+            created_by=user_id,
+            category_id=category_id).first() is not None:
+            return {'message': 'Conflict, Category already exists'}, 409
+        new_rec = Recipie(recipie_name=rec_name,
+                        ingredients=ingedients,
+                        created_by=user_id,
+                        category_id=category_id)
+        new_rec.save()
+        return {'message': 'Category successfully created.'}, 201
+        
+        
 
 # @api.route('/<int:category_id>')
 # @api.response(404, 'The Category you are querying does not exist.')

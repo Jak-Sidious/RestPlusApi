@@ -19,6 +19,8 @@ class User(db.Model):
     email = db.Column(db.String(256), nullable=False, unique=True, default='sample@sample.com')
     categories = db.relationship("Category", backref = "users",
                     lazy = 'dynamic')
+    recipies = db.relationship("Recipie", backref="users",
+                    lazy = 'dynamic')
 
 
     #todo modify user model to incorporate more unique identifiers 

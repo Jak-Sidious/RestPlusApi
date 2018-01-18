@@ -1,8 +1,5 @@
 from flask import Blueprint, jsonify, make_response
 from flask_restplus import Api
-from .user import api as ns1
-from .category import api as ns2
-from .recipie import api as ns3
 # from .models.cats import api as ns1
 
 authorization = {
@@ -22,7 +19,9 @@ api = Api(apiv1_bp,
     authorizations=authorization
 )
 
-
+from .user import api as ns1
+from .category import api as ns2
+from .recipie import api as ns3
 
 # api.add_namespace(ns1)
 api.add_namespace(ns1)

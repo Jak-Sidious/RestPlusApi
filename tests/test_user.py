@@ -2,7 +2,7 @@ import json
 
 from tests import BaseTest
 from app.models.user import User
-
+#both frontend and backend tests
 class UserTest(BaseTest):
     """Tests for the user category"""
 

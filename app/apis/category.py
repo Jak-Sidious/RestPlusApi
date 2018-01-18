@@ -6,7 +6,7 @@ from app import db
 from app.models.user import User
 from app.models.category import Category
 from app.apis.functionality.parsers import pagination_args
-from app.apis.recipie import recipe
+# from app.apis.recipie import recipe
 
 
 
@@ -18,17 +18,15 @@ edit_category = api.model('edit category', {
 })
 
 category_list = api.model('category', {
+    'user_id' : fields.Integer(readOnly = True, description='User that made the category'),
     'category_id': fields.Integer(readOnly =True, description='Unique identifier for each category'),
     'category_name' : fields.String(required=True, description='category name'),
     'category_description' : fields.String(required=True, description='A description about the current category'),
     'date_created' : fields.DateTime(readOnly=True, description = 'Date created'),
     'date_modified' : fields.DateTime(readOnnly=True, description = 'date modified'),
-    'user_id' : fields.Integer(readOnly = True, description='User that made the category')
+    'recipies' :fields.String(readOnly = True, description = 'Recipies Belonging to that category')
 })
 
-category_n_recipes = api.inherit('Category and associated recipies', category_list, {
-    'recipes': fields.List(fields.Nested(recipe, required=True))
-})
 
 @api.route('/list')
 class CategoryCollection(Resource):
@@ -79,11 +77,12 @@ class CategoryItem(Resource):
     '''
 
     @api.response(200, 'Category found successfully')
-    @api.marshal_list_with(category_n_recipes)
+    @api.marshal_list_with(category_list)
     @jwt_required
     def get(self, category_id):
         """Returns a particular category"""
-        response = Category.query.filter_by(category_id=category_id).first()
+        user_id = get_jwt_identity()
+        response = Category.query.filter_by(user_id=user_id, category_id=category_id).first()
         if response is None:
             return {'message': 'The Category you are querying does not exist.'}, 404
         return marshal(response, category_n_recipes)
