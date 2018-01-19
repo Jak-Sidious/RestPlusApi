@@ -9,7 +9,7 @@ from app.models.category import Category
 
 api = Namespace('recipie', 
                 description='Recipie related functionality',
-                path='/category/<int:category_id>/recipe')
+                path='/recipes/')
 
 recipe = api.model('recipie', {
     'recipie_id' : fields.Integer(readOnly=True, description='recipie unique identifier'),
@@ -46,7 +46,7 @@ pagination = api.model('A page of results', {
 })
 
 
-@api.route('/List')
+@api.route('/list')
 class RecipieCollection(Resource):
     @api.response(404, 'No Recipies created by this user')
     @api.response(200, 'Recipies found')
@@ -56,20 +56,20 @@ class RecipieCollection(Resource):
         
         user_id = get_jwt_identity()
         the_recz = Recipie.query.filter_by(created_by=user_id,
-                                                category_id=category_id).first()
+                                                category_id=category_id)
         if the_recz is None:
             return {'message': 'No Recipies created by this user'} , 404
 
         return marshal(the_recz, recipe), 200
 
-@api.route('/Create')
+@api.route('/<int:category_id>/create')
 class RecipieCreation(Resource):
     @api.response(201, 'Category successfully created.')
     @api.response(409, 'Conflict, Category already exists')
     @api.expect(recipie_data)
     @jwt_required
     def post(self, category_id):
-        """ Creates a new Recipie """
+        """ Creates a new Recipie attached to a particular category"""
         data = request.get_json()
         rec_name = data.get('recipie_name')
         ingedients = data.get('ingedients')
@@ -88,9 +88,9 @@ class RecipieCreation(Resource):
         
         
 
-@api.route('/Recipe item')
+@api.route('/recipeitem')
 @api.response(404, 'The Recipe you are querying does not exist.')
-class CategoryItem(Resource):
+class RecipeItem(Resource):
     @api.response(200, 'Recipie Located')
     @jwt_required
     def get(self, category_id):

@@ -10,7 +10,9 @@ from app.apis.functionality.parsers import pagination_args
 
 
 
-api = Namespace('category', description='Category related functionality')
+api = Namespace('category', 
+                description='Category related functionality',
+                path='/category/')
 
 edit_category = api.model('edit category', {
     'category_name' : fields.String(required=True, description='category name'),
