@@ -1,12 +1,11 @@
 from flask import request
-from flask_restplus import Resource, Namespace, fields
+from flask_restplus import Resource, Namespace, fields, marshal
 from flask_jwt_extended import jwt_required, get_jwt_identity
-
+from app import db
+from app.models.user import User
 from app.models.recipie import Recipie
 
-# from app.models.category import Category
-# from app.models.recipie import Recipie
-# from ..functionality.serializers import recipe
+from app.models.category import Category
 
 api = Namespace('recipie', 
                 description='Recipie related functionality',
@@ -17,10 +16,11 @@ recipe = api.model('recipie', {
     'recipie_name' : fields.String(required=True, description='recipie name'),
     'ingedients' : fields.String(required=True, description='A description of the ingredients to compile the recipie'),
     'created_by' : fields.Integer(readOnly=True, description='Which User created this nanka'),
-    'attached_category' : fields.Integer(readOnly=True, description='Which category does this recipe belong to'),
+    'category_id' : fields.Integer(readOnly=True, description='Which category does this recipe belong to'),
     'date_created' : fields.DateTime(readOnly=True, description='Date Created'),
     'date_modified' : fields.DateTime(readOnly=True, description='Date modified')
 })
+
 
 recipie_data = api.model('create recipie', {
     'recipie_name': fields.String(required=True, description='Name of the current recipe'),
@@ -46,18 +46,23 @@ pagination = api.model('A page of results', {
 })
 
 
-@api.route('/list')
+@api.route('/List')
 class RecipieCollection(Resource):
-    @api.marshall_list_with(category_list)
+    @api.response(404, 'No Recipies created by this user')
+    @api.response(200, 'Recipies found')
     @jwt_required
-    def get(self):
+    def get(self, category_id):
         """Returns a list of Recipies for a particular category"""
-        user_identity = get_jwt_identity()
-        #create base query object
-        listed = Recipie.query.filter_by(user_id=user_identity).first()
-        print (listed)
+        
+        user_id = get_jwt_identity()
+        the_recz = Recipie.query.filter_by(created_by=user_id,
+                                                category_id=category_id).first()
+        if the_recz is None:
+            return {'message': 'No Recipies created by this user'} , 404
 
-@api.route('/create')
+        return marshal(the_recz, recipe), 200
+
+@api.route('/Create')
 class RecipieCreation(Resource):
     @api.response(201, 'Category successfully created.')
     @api.response(409, 'Conflict, Category already exists')
@@ -83,23 +88,24 @@ class RecipieCreation(Resource):
         
         
 
-# @api.route('/<int:category_id>')
-# @api.response(404, 'The Category you are querying does not exist.')
-# class CategoryItem(Resource):
-#     def get(self, category_id):
-#         """Returns a particular category"""
-#         pass
+@api.route('/Recipe item')
+@api.response(404, 'The Category you are querying does not exist.')
+class CategoryItem(Resource):
+    @jwt_required
+    def get(self, category_id):
+        """Returns a particular category"""
+        
 
-#     @api.response(204, 'Category successfully updated.')
-#     @api.response(404, "Not Found, Category doesn't exist")
-#     @api.response(403, "Forbidden, You don't own this category")
-#     def put(self, category_id):
-#         """ Updates an existing category """
-#         pass
+    @api.response(204, 'Category successfully updated.')
+    @api.response(404, "Not Found, Category doesn't exist")
+    @api.response(403, "Forbidden, You don't own this category")
+    def put(self, category_id):
+        """ Updates an existing category """
+        pass
 
-#     @api.response(204, 'Category successfully deleted.')
-#     @api.response(404, 'Not Found, Category does not exixt')
-#     @api.response(403, "Forbidden, You don't own this category")
-#     def delete(self, category_id):
-#         """Deletes an existing Category"""
-#         pass
+    @api.response(204, 'Category successfully deleted.')
+    @api.response(404, 'Not Found, Category does not exixt')
+    @api.response(403, "Forbidden, You don't own this category")
+    def delete(self, category_id):
+        """Deletes an existing Category"""
+        pass
