@@ -22,7 +22,7 @@ class Category(db.Model):
         onupdate=datetime.utcnow())
     user_id = db.Column(db.Integer, db.ForeignKey('users.user_id'), nullable=False)
     recipies = db.relationship("Recipie", backref = "categories",
-                    lazy = 'dynamic')
+                    lazy = 'dynamic',cascade='all, delete-orphan')
 
 
     def __init__(self, category_name, category_description, created_by):

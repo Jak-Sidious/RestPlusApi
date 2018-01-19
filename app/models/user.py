@@ -18,9 +18,9 @@ class User(db.Model):
     password = db.Column(db.String(256), nullable=False)
     email = db.Column(db.String(256), nullable=False, unique=True, default='sample@sample.com')
     categories = db.relationship("Category", backref = "users",
-                    lazy = 'dynamic')
+                    lazy = 'dynamic', cascade='all, delete-orphan')
     recipies = db.relationship("Recipie", backref="users",
-                    lazy = 'dynamic')
+                    lazy = 'dynamic', cascade='all, delete-orphan')
 
 
     #todo modify user model to incorporate more unique identifiers 
