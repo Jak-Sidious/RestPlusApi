@@ -28,6 +28,10 @@ class BaseTest(TestCase):
             "category_name": "test category",
             "category_description" : "Test description"
         }
+        self.category_data1 = {
+            "category_name": "test category1",
+            "category_description" : "Test description1"
+        }
         db.create_all()
 
     def tearDown(self):
