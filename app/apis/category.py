@@ -71,7 +71,7 @@ class CategoryCreation(Resource):
         return {'message': 'Category successfully created'}, 201
 
 
-@api.route('/<int:category_id>/<int:recipie_id>')
+@api.route('/<int:category_id>')
 @api.response(404, 'The Category you are querying does not exist.')
 class CategoryItem(Resource):
     '''Functionality for the viewing, updating and deleting of a 
