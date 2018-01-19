@@ -10,6 +10,21 @@
 
 This is an API for a Recipies Service using Flask. Users can register an account, loginin and from there perform certain functionality on the recipies
 
+| EndPoint                                                   | Functionality                                    |
+| ---------------------------------------------------------- | ------------------------------------------------ |
+| [ POST /user/login/ ](#)                                   | Logs a user in                                   |
+| [ POST /user/register/ ](#)                                | Register a user                                  |
+| [ DELETE /auth/logout/ ](#)                                | Logout a user                                    |
+| [ POST /category/\create/ ](#)                             | Create a category                                |
+| [ GET /category/\list/ ](#)                                | List all categories                              |
+| [ DELETE /category/\<category_id>/ ](#)                    | Delete the category                              |
+| [ GET /category/\<category_id>/ ](#)                       | List all categories for a particluar user        |
+| [ POST /category/<category_id>/recipe/Create ](#)          | Create a recipie for a particular user           |
+| [ GET /category/<category_id>/recipe/List](#)              | Get all recipes in the specified category id     |
+| [ DELETE /category/<category_id>/recipe/Recipe item](#)    | Get a recipe in the specified category id        |
+| [ GET /category/<category_id>/recipe/Recipe item](#)       | Update the recipe in the specified category id   |
+| [ PUT /category/<category_id>/recipe/Recipe item](#)       | Delete the recipe in the specified category id   |
+
 ## Setup
 
 To use this application ensure that you have python 3.6+ clone the repository to your local machine and execute the following commands

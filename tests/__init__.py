@@ -32,6 +32,10 @@ class BaseTest(TestCase):
             "category_name": "test category1",
             "category_description" : "Test description1"
         }
+        self.recipe_data = {
+            "recipie_name": "string",
+            "ingedients": "string"
+        }
         db.create_all()
 
     def tearDown(self):

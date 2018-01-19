@@ -114,8 +114,8 @@ class CategoryItem(Resource):
         if edit_rec is None:
             return {'message': 'No such Recipe exists'}, 404
         data = request.get_json()
-        edit_rec.recipie_name = data.get['recipie_name']
-        edit_rec.ingedients = data.get['ingedients']
+        edit_rec.recipie_name = data.get('recipie_name')
+        edit_rec.ingedients = data.get('ingedients')
         db.session.add(edit_rec)
         db.session.commit()
         return {'message': 'Recipe successfully updated.'}, 204
