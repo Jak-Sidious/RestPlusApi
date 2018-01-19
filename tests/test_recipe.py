@@ -19,7 +19,8 @@ class RecipeTest(BaseTest):
                                     headers = {'Authorization': 'Bearer '+ token}, 
                                     content_type="application/json",
                                     data=json.dumps(self.category_data))
-        rec = self.client.post("/apiv1/category/1/recipe/Create",
+                                    
+        rec = self.client.post("/apiv1/recipes/1/create",
                                     headers = {'Authorization': 'Bearer '+ token}, 
                                     content_type="application/json",
                                     data=json.dumps(self.recipe_data))

@@ -71,7 +71,7 @@ class CategoryCreation(Resource):
         return {'message': 'Category successfully created'}, 201
 
 
-@api.route('/<int:category_id>')
+@api.route('/<int:category_id>/<int:recipie_id>')
 @api.response(404, 'The Category you are querying does not exist.')
 class CategoryItem(Resource):
     '''Functionality for the viewing, updating and deleting of a 
@@ -119,7 +119,6 @@ class CategoryItem(Resource):
         """Deletes an existing Category"""
         user_id = get_jwt_identity()
         the_cat = Category.query.filter_by(user_id=user_id, category_id=category_id).first()
-        print (the_cat)
 
         if the_cat is not None:
             db.session.delete(the_cat)
