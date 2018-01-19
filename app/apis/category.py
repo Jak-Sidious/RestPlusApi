@@ -86,7 +86,7 @@ class CategoryItem(Resource):
                                         category_id=category_id).first()
         if response is None:
             return {'message': 'The Category you are querying does not exist.'}, 404
-        return marshal(response, category_n_recipes)
+        return marshal(response, category_list)
         
 
     @api.response(204, 'Category successfully updated.')
@@ -98,13 +98,13 @@ class CategoryItem(Resource):
         """ Updates an existing category """
         user_id = get_jwt_identity()
         edit_cat = Category.query.filter_by(user_id=user_id, category_id=category_id).first()
-        print (edit_cat)
+        # print (edit_cat)
         if edit_cat is None:
             return {'message': 'No such category exists'}, 404
         data = request.get_json()
-        print (data)
-        edit_cat.category_name = data.get['category_name']
-        edit_cat.category_description = data.get['category_description']
+        # print (data)
+        edit_cat.category_name = data.get('category_name')
+        edit_cat.category_description = data.get('category_description')
         db.session.add(edit_cat)
         db.session.commit()
         return {'message': 'Category successfully updated'}

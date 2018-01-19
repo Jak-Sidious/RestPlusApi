@@ -4,12 +4,8 @@ from flask_jwt_extended import (
     jwt_required, create_access_token, get_jwt_identity, get_raw_jwt
     )
 
-
-
 from app.models.user import User
 from app.models.blacklist import Blacklist
-
-
 
 api = Namespace('users', description='User sign up and login operations')
 
