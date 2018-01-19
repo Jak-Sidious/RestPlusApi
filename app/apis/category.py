@@ -82,7 +82,8 @@ class CategoryItem(Resource):
     def get(self, category_id):
         """Returns a particular category"""
         user_id = get_jwt_identity()
-        response = Category.query.filter_by(user_id=user_id, category_id=category_id).first()
+        response = Category.query.filter_by(user_id=user_id, 
+                                        category_id=category_id).first()
         if response is None:
             return {'message': 'The Category you are querying does not exist.'}, 404
         return marshal(response, category_n_recipes)
@@ -108,6 +109,7 @@ class CategoryItem(Resource):
         db.session.commit()
         return {'message': 'Category successfully updated'}
 
+    #response for unowned category
     @api.response(204, 'Category successfully deleted.')
     @api.response(404, 'Not Found, Category does not exixt')
     @jwt_required

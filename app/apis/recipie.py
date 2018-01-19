@@ -89,23 +89,51 @@ class RecipieCreation(Resource):
         
 
 @api.route('/Recipe item')
-@api.response(404, 'The Category you are querying does not exist.')
+@api.response(404, 'The Recipe you are querying does not exist.')
 class CategoryItem(Resource):
+    @api.response(200, 'Recipie Located')
     @jwt_required
     def get(self, category_id):
-        """Returns a particular category"""
+        """Returns a particular Recipe"""
+        user_id = get_jwt_identity()
+        response = Recipie.query.filter_by(created_by=user_id,
+                                                category_id=category_id).first()
+        if response is None:
+            return {'message': 'The Recipe you are querying foes not exist'}, 404
+        return marshal(response, recipe), 200
+
+    @api.response(204, 'Recipe successfully updated.')
+    @api.response(404, 'No such Recipe exists')
+    @api.response(403, "Forbidden, You don't own this Recipe")
+    @api.expect(recipie_data)
+    def put(self, category_id):
+        """ Updates an existing Recipe """
+        user_id = get_jwt_identity()
+        edit_rec = Recipie.query.filter_by(created_by=user_id,
+                                                category_id=category_id).first()
+        if edit_rec is None:
+            return {'message': 'No such Recipe exists'}, 404
+        data = request.get_json()
+        edit_rec.recipie_name = data.get['recipie_name']
+        edit_rec.ingedients = data.get['ingedients']
+        db.session.add(edit_rec)
+        db.session.commit()
+        return {'message': 'Recipe successfully updated.'}, 204
+        
         
 
-    @api.response(204, 'Category successfully updated.')
-    @api.response(404, "Not Found, Category doesn't exist")
-    @api.response(403, "Forbidden, You don't own this category")
-    def put(self, category_id):
-        """ Updates an existing category """
-        pass
-
-    @api.response(204, 'Category successfully deleted.')
-    @api.response(404, 'Not Found, Category does not exixt')
+    @api.response(204, 'Recipie successfully deleted.')
+    @api.response(404, 'Not Found, Recipie does not exixt')
     @api.response(403, "Forbidden, You don't own this category")
     def delete(self, category_id):
-        """Deletes an existing Category"""
-        pass
+        """Deletes an existing Recipe"""
+        user_id = get_jwt_identity()
+        the_rec = Recipie.query.filter_by(created_by=user_id,
+                                                category_id=category_id).first()
+        
+        if the_rec is not None:
+            db.session.delete(the_rec)
+            db.session.commit()
+            return {'message' : 'Recipie successfully deleted.'}, 204
+        return {'message': 'Not Found, Recipie does not exixt'}, 404
+
