@@ -25,15 +25,14 @@ category_list = api.model('category', {
     'category_name' : fields.String(required=True, description='category name'),
     'category_description' : fields.String(required=True, description='A description about the current category'),
     'date_created' : fields.DateTime(readOnly=True, description = 'Date created'),
-    'date_modified' : fields.DateTime(readOnnly=True, description = 'date modified'),
-    'recipies' :fields.String(readOnly = True, description = 'Recipies Belonging to that category')
+    'date_modified' : fields.DateTime(readOnnly=True, description = 'date modified')
 })
 
 
 @api.route('/list')
 class CategoryCollection(Resource):
     
-    @api.marshal_list_with(category_list)
+    # @api.marshal_list_with(category_list)
     @jwt_required
     def get(self):
         """List all current categories"""

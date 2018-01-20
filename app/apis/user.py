@@ -63,16 +63,16 @@ class UserLogin(Resource):
                 return {"token": access_token,
                         "response": "User sucessfully Loged in"}, 200
 
-# @api.route('/logout')
-# class UserLogout(Resource):
-#     @api.response(200, 'You have been logged out')
-#     @jwt_required
-#     def delete(self):
-#         pass
+@api.route('/logout')
+class UserLogout(Resource):
+    @api.response(200, 'You have been logged out')
+    @jwt_required
+    def delete(self):
+        pass
 
-# @api.route('/reset_password')
-# class PasswordReset(Resource):
-#     @api.response(200, 'Password reset successfully')
-#     @jwt_required
-#     def put(self):
-#         pass
+@api.route('/reset_password')
+class PasswordReset(Resource):
+    @api.response(200, 'Password reset successfully')
+    @jwt_required
+    def put(self):
+        pass
