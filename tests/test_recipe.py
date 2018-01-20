@@ -8,7 +8,7 @@ from app.models.recipie import Recipie
 class RecipeTest(BaseTest):
     """Test for the Category functionality"""
 
-    def test_recipe_succesfully_created(self):
+    def test_recipe_can_be_succesfully_created(self):
         
         '''Test that a recipie can be created'''
         res = self.app.post("/apiv1/users/register", data=json.dumps(self.reg_data), content_type="application/json")
@@ -52,4 +52,16 @@ class RecipeTest(BaseTest):
         msg = json.loads(rec2.data)
         self.assertEqual(rec2.status_code, 409)
         self.assertEqual(msg['message'], 'Conflict, Recipe already exists')
+
+    def test_recipes_can_be_listed(self):
+        pass
+
+    def test_recipe_can_be_viewed(self):
+        pass
+
+    def test_recipe_can_be_edited(self):
+        pass
+
+    def test_recipe_can_be_deleted(self):
+        pass
 
