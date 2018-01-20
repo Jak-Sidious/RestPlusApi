@@ -37,7 +37,7 @@ class UserRegistration(Resource):
     @api.response(409, 'Conflict, User already exists')
     @api.expect(user_signup)
     def post(self):
-        """Registers a user """
+        '''Registers a user '''
         data = request.get_json()
         username = data.get('username')
         password = data.get('password')
@@ -58,7 +58,7 @@ class UserLogin(Resource):
     @api.response(404, 'User not registered')
     @api.expect(user_login)
     def post(self):
-        """Logs in a regestered user"""
+        '''Logs in a regestered user'''
         data = request.get_json()
 
         username = data.get('username')

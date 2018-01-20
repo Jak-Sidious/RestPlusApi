@@ -6,7 +6,7 @@ from app.models.category import Category
 from app.models.recipie import Recipie
 
 class RecipeTest(BaseTest):
-    """Test for the Category functionality"""
+    '''Test for the Category functionality'''
 
     def test_recipe_can_be_succesfully_created(self):
         

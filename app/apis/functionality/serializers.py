@@ -2,7 +2,7 @@
 
 # from app.apis import api
 
-"""This file deals with data validation"""
+'''This file deals with data validation'''
 
 
 

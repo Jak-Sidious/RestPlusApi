@@ -45,7 +45,7 @@ class RecipieCollection(Resource):
     @api.response(200, 'Recipies found')
     @jwt_required
     def get(self, category_id):
-        """Returns a list of Recipies for a particular category"""
+        '''Returns a list of Recipies for a particular category'''
 
         user_id = get_jwt_identity()
         the_recz = Recipie.query.filter_by(created_by=user_id,
@@ -73,7 +73,7 @@ class RecipieCreation(Resource):
     @api.expect(recipie_data)
     @jwt_required
     def post(self, category_id):
-        """ Creates a new Recipie attached to a particular category"""
+        ''' Creates a new Recipie attached to a particular category'''
         data = request.get_json()
         rec_name = data.get('recipie_name')
         ingredients = data.get('ingredients')
@@ -98,7 +98,7 @@ class RecipeItem(Resource):
     @api.response(200, 'Recipie Located')
     @jwt_required
     def get(self, category_id, recipie_id):
-        """Returns a recipe for a category"""
+        '''Returns a recipe for a category'''
         user_id = get_jwt_identity()  
         response = Recipie.query.filter_by(
                                 created_by=user_id,
@@ -115,7 +115,7 @@ class RecipeItem(Resource):
     @api.expect(recipie_data)
     @jwt_required
     def put(self, category_id, recipie_id):
-        """ Updates an categories recipie """
+        ''' Updates an categories recipie '''
         user_id = get_jwt_identity() 
         current_recipe = Recipie.query.filter_by(created_by=user_id,
                                                 category_id=category_id,
@@ -137,7 +137,7 @@ class RecipeItem(Resource):
     @api.response(403, "Forbidden, You don't own this category")
     @jwt_required
     def delete(self, category_id, recipie_id):
-        """Deletes an existing Recipe"""
+        '''Deletes an existing Recipe'''
         user_id = get_jwt_identity() 
         current_recipe = Recipie.query.filter_by(created_by=user_id,
                                                 category_id=category_id,

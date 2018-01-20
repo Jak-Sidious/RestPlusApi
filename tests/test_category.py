@@ -6,7 +6,7 @@ from app.models.category import Category
 
 
 class CategoryTest(BaseTest):
-    """Test for the Category functionality"""
+    '''Test for the Category functionality'''
 
     def test_category_succesfully_created(self):
         

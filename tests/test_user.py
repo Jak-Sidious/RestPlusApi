@@ -3,12 +3,12 @@ import json
 from tests import BaseTest
 from app.models.user import User
 class UserTest(BaseTest):
-    """Tests for the user category"""
+    '''Tests for the user category'''
 
     
     # pass and fail tests
     def test_registration_succesful(self):
-        """Ensure a user can be added to the database"""
+        '''Ensure a user can be added to the database'''
         
         response = self.app.post("/apiv1/users/register", data=json.dumps(self.reg_data), content_type="application/json")
         msg = json.loads(response.data)
@@ -18,7 +18,7 @@ class UserTest(BaseTest):
         self.assertEqual(User.query.count(), 1)
 
     def test_login_succesful(self):
-        """Ensure a user can login successfully"""
+        '''Ensure a user can login successfully'''
         res = self.app.post("/apiv1/users/register", data=json.dumps(self.reg_data), content_type="application/json")
         res1 = self.app.post("/apiv1/users/login", data=json.dumps(self.login_data), content_type="application/json")
         msg = json.loads(res1.data)

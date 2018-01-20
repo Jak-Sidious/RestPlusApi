@@ -9,7 +9,7 @@ from datetime import datetime, timedelta
 
 
 class User(db.Model):
-    """This class represnets the Users table."""
+    '''This class represnets the Users table.'''
 
     __tablename__ = 'users'
 
@@ -30,13 +30,13 @@ class User(db.Model):
         self.email = email
 
     def password_is_valid(self, password):
-        """
+        '''
         Checks the password againts it's hash to validate the user's password
-        """
+        '''
         return Bcrypt().check_password_hash(self.password, password)
 
     def save(self):
-        """Method to save instances of the User class in the database"""
+        '''Method to save instances of the User class in the database'''
         db.session.add(self)
         db.session.commit()
 

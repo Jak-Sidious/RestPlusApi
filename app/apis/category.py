@@ -30,7 +30,7 @@ category_list = api.model('category', {
 class CategoryCollection(Resource):
     @jwt_required
     def get(self):
-        """List all current categories"""
+        '''List all current categories'''
 
         user_identity = get_jwt_identity()
         created = User.query.filter_by(user_id=user_identity).first()
@@ -50,7 +50,7 @@ class CategoryCreation(Resource):
     @api.response(409, 'Conflict, Category already exists')
     @api.expect(edit_category)
     def post(self):
-        """ Creates a new Category """
+        '''Creates a new Category '''
         data = request.get_json()
         categoryName = data.get('category_name')
         categoryDesc = data.get('category_description')
@@ -76,7 +76,7 @@ class CategoryItem(Resource):
     @api.marshal_list_with(category_list)
     @jwt_required
     def get(self, category_id):
-        """Returns a particular category"""
+        '''Returns a particular category'''
         user_id = get_jwt_identity()
         response = Category.query.filter_by(user_id=user_id, 
                                         category_id=category_id).first()
@@ -91,7 +91,7 @@ class CategoryItem(Resource):
     @jwt_required
     @api.expect(edit_category)
     def put(self, category_id):
-        """ Updates an existing category """
+        ''' Updates an existing category '''
         user_id = get_jwt_identity()
         edit_cat = Category.query.filter_by(user_id=user_id, category_id=category_id).first()
         if edit_cat is None:
@@ -107,7 +107,7 @@ class CategoryItem(Resource):
     @api.response(404, 'Not Found, Category does not exixt')
     @jwt_required
     def delete(self, category_id):
-        """Deletes an existing Category"""
+        '''Deletes an existing Category''''
         user_id = get_jwt_identity()
         the_cat = Category.query.filter_by(user_id=user_id, category_id=category_id).first()
 

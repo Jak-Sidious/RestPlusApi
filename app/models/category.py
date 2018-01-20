@@ -9,7 +9,7 @@ import jwt
 from datetime import datetime, timedelta
 
 class Category(db.Model):
-    """This class represents the category table"""
+    '''This class represents the category table'''
 
     __tablename__ = 'categories'
 
