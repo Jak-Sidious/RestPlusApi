@@ -107,7 +107,7 @@ class CategoryItem(Resource):
     @api.response(404, 'Not Found, Category does not exixt')
     @jwt_required
     def delete(self, category_id):
-        '''Deletes an existing Category''''
+        '''Deletes an existing Category'''
         user_id = get_jwt_identity()
         the_cat = Category.query.filter_by(user_id=user_id, category_id=category_id).first()
 
