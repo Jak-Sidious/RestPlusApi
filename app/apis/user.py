@@ -24,6 +24,11 @@ user_login = api.model('users', {
     'password' : fields.String(required=True, description='password required to grant a user access'),
 })
 
+password_reset = api.model('password rest', {
+    'old_password' : fields.String(required=True, description='existing user password'),
+    'new_password' : fields.String(required=True, description='password to change to')
+})
+
 
 @api.route('/register')
 class UserRegistration(Resource):
@@ -74,6 +79,7 @@ class UserLogout(Resource):
     @api.response(200, 'You have been logged out')
     @jwt_required
     def delete(self):
+        '''Enable a user to succesfully logout'''
         jti = get_raw_jwt()['jti']
         blacklister = Blacklist(jti)
         db.session.add(blacklister)
@@ -81,9 +87,24 @@ class UserLogout(Resource):
         return {'message': 'You have been logged out'}, 200
 
 
-@api.route('/reset_password')
+@api.route('/resetpassword')
 class PasswordReset(Resource):
     @api.response(200, 'Password reset successfully')
+    @api.response(422, 'Incorect password, please try again')
     @jwt_required
+    @api.expect(password_reset)
     def put(self):
-        pass
+        '''Enable a user to succesfully reset their psssword'''
+        userId = get_jwt_identity()
+        user = User.query.filter_by(user_id=userId).first()
+        print (user.user_id)
+        data = request.get_json()
+        old_pass = data.get('old_password')
+        if user.password_is_valid(old_pass):
+            new_pass = data.get('new_password')
+            user.password = new_pass
+            db.session.add(user)
+            db.session.commit()
+            return {'new password set': user.password,
+                    'message': 'Password reset successfully'}, 200
+        return {'message': 'Incorect password, please try again'}, 422

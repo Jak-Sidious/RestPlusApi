@@ -26,7 +26,7 @@ class User(db.Model):
     def __init__(self, username, password, email):
         ''' Initialise the user with a username '''
         self.username = username
-        self.password = Bcrypt().generate_password_hash(password).decode()
+        self.password = Bcrypt().generate_password_hash(password).decode('utf-8')
         self.email = email
 
     def password_is_valid(self, password):
