@@ -72,7 +72,7 @@ class RecipieCreation(Resource):
         """ Creates a new Recipie attached to a particular category"""
         data = request.get_json()
         rec_name = data.get('recipie_name')
-        ingedients = data.get('ingedients')
+        ingredients = data.get('ingredients')
         user_id = get_jwt_identity()
         category_id = category_id
         if Recipie.query.filter_by(
@@ -81,7 +81,7 @@ class RecipieCreation(Resource):
                 recipie_name=rec_name).first() is not None:
             return {'message': 'Conflict, Recipe already exists'}, 409
         new_rec = Recipie(recipie_name=rec_name,
-                            ingredients=ingedients,
+                            ingredients=ingredients,
                             created_by=user_id,
                             category_id=category_id)
         new_rec.save()

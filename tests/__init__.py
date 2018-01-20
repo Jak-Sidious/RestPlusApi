@@ -33,8 +33,8 @@ class BaseTest(TestCase):
             "category_description" : "Test description1"
         }
         self.recipe_data = {
-            "recipie_name": "string",
-            "ingedients": "string"
+            "recipie_name": "Test name",
+            "ingredients": " Test ingredients"
         }
         db.create_all()
 

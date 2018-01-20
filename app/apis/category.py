@@ -67,7 +67,8 @@ class CategoryCreation(Resource):
                 return {'message': 'Category already exists'}, 409
         new_cat = Category(categoryName, categoryDesc, user_id)
         new_cat.save()
-        return {'message': 'Category successfully created'}, 201
+        return {'category_id' : new_cat.category_id,
+                'message': 'Category successfully created'}, 201
 
 
 @api.route('/<int:category_id>')
