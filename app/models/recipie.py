@@ -14,8 +14,10 @@ class Recipie(db.Model):
     recipie_id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     recipie_name = db.Column(db.String(100), nullable=False)
     ingredients = db.Column(db.String(256), nullable=False)
-    created_by = db.Column(db.Integer, db.ForeignKey('users.user_id'), nullable = False )
-    category_id = db.Column(db.Integer, db.ForeignKey('categories.category_id'), nullable=False)
+    created_by = db.Column(db.Integer, db.ForeignKey('users.user_id')
+                            , nullable = False )
+    category_id = db.Column(db.Integer, db.ForeignKey('categories.category_id'), 
+                            nullable=False)
     date_created = db.Column(db.DateTime(), default=datetime.utcnow())
     date_modified = db.Column(db.DateTime(), default=datetime.utcnow())
 
@@ -24,7 +26,7 @@ class Recipie(db.Model):
         and attached category''' 
         self.recipie_name = recipie_name
         self.ingredients = ingredients
-        self.attached_category = attached_category
+        self.category_id = category_id
         self.created_by = created_by
 
     def save(self):
@@ -34,4 +36,4 @@ class Recipie(db.Model):
 
     def __repr__(self):
         '''tells python how to print objects of a Recipie class'''
-        return '<Recipie: {}>'.format(self.recipie_name)
+        return '<Recipie: {} {} {} {}>'.format(self.recipie_name, self.ingredients, self.created_by, self.category_id)

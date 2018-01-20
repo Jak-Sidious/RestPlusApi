@@ -1,3 +1,4 @@
+from datetime import timedelta
 from flask import request, json
 from flask_restplus import Resource, Namespace, fields
 from flask_jwt_extended import (
@@ -61,7 +62,9 @@ class UserLogin(Resource):
             return {"message": "User not registered"}, 404
         else:
             if user.password_is_valid(password):
-                access_token = create_access_token(identity=user.user_id)
+                expires = timedelta(days=10)
+                access_token = create_access_token(identity=user.user_id, 
+                                                    expires_delta=expires)
                 return {"token": access_token,
                         "response": "User sucessfully Loged in"}, 200
 

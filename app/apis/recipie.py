@@ -57,7 +57,11 @@ class RecipieCollection(Resource):
         for a_recipe in paged_recs.items:
             paginated.append(a_recipe)
 
+        size = len(paginated)
+        print (size)
 
+        if size == 0:
+            return {'message': 'No Recipies created by this user'}, 404
         return marshal(paginated, recipe), 200
 
 
@@ -94,27 +98,53 @@ class RecipeItem(Resource):
     @api.response(200, 'Recipie Located')
     @jwt_required
     def get(self, category_id, recipie_id):
-        """Returns a recipe for a categ0ry"""
-        user_id = get_jwt_identity()
-        response = Recipie.query.filter_by(created_by=user_id,
-                                            category_id=category_id).first()
+        """Returns a recipe for a category"""
+        user_id = get_jwt_identity()  
+        response = Recipie.query.filter_by(
+                                created_by=user_id,
+                                category_id=category_id,
+                                recipie_id=recipie_id
+                                ).first()
         if response is None:
             return {'message': 'The Recipe you are querying does not exist'}, 404
         return marshal(response, recipe), 200
-        pass
 
     @api.response(204, 'Recipe successfully updated.')
     @api.response(404, 'No such Recipe exists')
     @api.response(403, "Forbidden, You don't own this Recipe")
     @api.expect(recipie_data)
+    @jwt_required
     def put(self, category_id, recipie_id):
         """ Updates an categories recipie """
-        pass
+        user_id = get_jwt_identity() 
+        current_recipe = Recipie.query.filter_by(created_by=user_id,
+                                                category_id=category_id,
+                                                recipie_id=recipie_id).first()
+        data = request.get_json()
+        rec_name = data.get('recipie_name')
+        ingrid = data.get('ingredients')
+        if current_recipe is not None:
+            current_recipe.recipie_name = rec_name
+            current_recipe.ingredients = ingrid
+            db.session.add(current_recipe)
+            db.session.commit()
+            return {'message': 'Recipe successfully updated.'}, 200
+        return {'message': 'No such Recipe exists'}, 404
 
 
     @api.response(204, 'Recipie successfully deleted.')
-    @api.response(404, 'Not Found, Recipie does not exixt')
+    @api.response(404, 'Not Found, Recipie does not exist')
     @api.response(403, "Forbidden, You don't own this category")
+    @jwt_required
     def delete(self, category_id, recipie_id):
         """Deletes an existing Recipe"""
-        pass
+        user_id = get_jwt_identity() 
+        current_recipe = Recipie.query.filter_by(created_by=user_id,
+                                                category_id=category_id,
+                                                recipie_id=recipie_id).first()
+        
+        if current_recipe is not None:
+            db.session.delete(current_recipe)
+            db.session.commit()
+            return {'message': 'Recipie successfully deleted.'}, 200
+        return {'message': 'Not Found, Recipie does not exist'}, 404
