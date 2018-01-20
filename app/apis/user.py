@@ -5,6 +5,7 @@ from flask_jwt_extended import (
     jwt_required, create_access_token, get_jwt_identity, get_raw_jwt
     )
 
+from app import db
 from app.models.user import User
 from app.models.blacklist import Blacklist
 # from app.apis.functionality.functions import (
@@ -73,7 +74,12 @@ class UserLogout(Resource):
     @api.response(200, 'You have been logged out')
     @jwt_required
     def delete(self):
-        pass
+        jti = get_raw_jwt()['jti']
+        blacklister = Blacklist(jti)
+        db.session.add(blacklister)
+        db.session.commit()
+        return {'message': 'You have been logged out'}, 200
+
 
 @api.route('/reset_password')
 class PasswordReset(Resource):
