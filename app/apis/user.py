@@ -6,19 +6,8 @@ from flask_jwt_extended import (
 
 from app.models.user import User
 from app.models.blacklist import Blacklist
-
-api = Namespace('users', description='User sign up and login operations')
-
-user_signup = api.model('user signup', {
-    'username' : fields.String(required=True, description='unique name for a user'),
-    'password' : fields.String(required=True, description='password required to grant a user access'),
-    'email' : fields.String(required=True, description='email required for a user')
-})
-
-user_login = api.model('users', {
-    'username' : fields.String(required=True, description='unique name for a user'),
-    'password' : fields.String(required=True, description='password required to grant a user access'),
-})
+# /Users/jakanakiwanuka/work/RestplusDemo/FlaskApi/app/apis/functionality/functions.py
+from app.apis.functionality.functions import api, user_signup, user_login
 
 @api.route('/register')
 class UserRegistration(Resource):
