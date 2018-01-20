@@ -2,7 +2,6 @@ import json
 
 from tests import BaseTest
 from app.models.user import User
-#both frontend and backend tests
 class UserTest(BaseTest):
     """Tests for the user category"""
 
@@ -33,12 +32,3 @@ class UserTest(BaseTest):
         self.assertIn(msg['message'], 'User not registered')
         self.assertEqual(res.status_code, 404)
         
-
-
-    # def test_valid_logout(self):
-    #     ''' Test for logout '''
-    #     pass
-
-    # def test_reset_password(self):
-    #     ''' Test for password reset'''
-    #     pass

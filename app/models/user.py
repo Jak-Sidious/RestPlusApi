@@ -23,7 +23,6 @@ class User(db.Model):
                     lazy = 'dynamic', cascade='all, delete-orphan')
 
 
-    #todo modify user model to incorporate more unique identifiers 
     def __init__(self, username, password, email):
         ''' Initialise the user with a username '''
         self.username = username

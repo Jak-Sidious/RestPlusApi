@@ -31,16 +31,16 @@ class Category(db.Model):
         self.user_id = created_by
 
     def save(self):
-        # save a category
+        '''Method to save category instance'''
         db.session.add(self)
         db.session.commit()
 
     def __repr__(self):
-        # tells python how to print objects of a class
+        '''tells python how to print objects of a class'''
         return '<Category name: {}>'.format(self.category_name)
 
 
     def delete(self):
-        """Delete an instance of the category class"""
+        '''Delete an instance of the category class'''
         db.session.delete(self)
         db.session.commit()

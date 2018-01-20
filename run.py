@@ -7,7 +7,6 @@ from flask_jwt_extended import (
     jwt_refresh_token_required, create_refresh_token,
     get_jwt_identity
 )
-# from flask_restful import Api
 
 app = Flask(__name__)
 

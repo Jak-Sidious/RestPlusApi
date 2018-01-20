@@ -70,9 +70,7 @@ class CategoryTest(BaseTest):
                                 headers = {'Authorization': 'Bearer '+ token}, 
                                 content_type="application/json",
                                 data=json.dumps(self.category_data1))
-        # print (catview)
         msg = json.loads(catview.data)
-        # print (msg['message'])
         self.assertEqual(catres.status_code, 201)
 
     def test_can_delete_category(self):
@@ -87,6 +85,4 @@ class CategoryTest(BaseTest):
                                 headers = {'Authorization': 'Bearer '+ token}, 
                                 content_type="application/json",
                                 data=json.dumps(self.category_data1))
-        # msg = json.loads(catdelete.data)
-        # print (msg['message'])
         self.assertEqual(catdelete.status_code, 204)

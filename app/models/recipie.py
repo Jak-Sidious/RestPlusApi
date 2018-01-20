@@ -7,7 +7,7 @@ import jwt
 from datetime import datetime, timedelta
 
 class Recipie(db.Model):
-    """This class represents the recipies table"""
+    '''This class represents the recipies table'''
 
     __tablename__ = 'recipies'
 
@@ -20,19 +20,18 @@ class Recipie(db.Model):
     date_modified = db.Column(db.DateTime(), default=datetime.utcnow())
 
     def init(self, recipie_id, recipie_name, ingredients, created_by):
-        """ Initalise a recipie with a name, ingredients, created by 
-        and attached category """
+        '''Initalise a recipie with a name, ingredients, created by 
+        and attached category''' 
         self.recipie_name = recipie_name
         self.ingredients = ingredients
         self.attached_category = attached_category
         self.created_by = created_by
 
     def save(self):
-        """Save a recipie"""
-        # save a category
+        '''Save a recipie'''
         db.session.add(self)
         db.session.commit()
 
     def __repr__(self):
-        #  tells python how to print objects of a Recipie class
+        '''tells python how to print objects of a Recipie class'''
         return '<Recipie: {}>'.format(self.recipie_name)

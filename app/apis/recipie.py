@@ -88,7 +88,6 @@ class RecipieCreation(Resource):
         return {'message': 'Recipe successfully created.'}, 201
 
 
-# modify to cater to the redesigned routes
 @api.route('/<int:category_id>/<int:recipie_id>')
 @api.response(404, 'The Recipe you are querying does not exist.')
 class RecipeItem(Resource):

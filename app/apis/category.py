@@ -1,14 +1,11 @@
 from flask import request
 from flask_restplus import Resource, Namespace, fields, marshal
 from flask_jwt_extended import jwt_required, get_jwt_identity
+# from app.apis.functionality.functions import edit_category, category_list
 
 from app import db
 from app.models.user import User
 from app.models.category import Category
-from app.apis.functionality.parsers import pagination_args
-# from app.apis.recipie import recipe
-
-
 
 api = Namespace('category', 
                 description='Category related functionality',
@@ -31,14 +28,11 @@ category_list = api.model('category', {
 
 @api.route('/list')
 class CategoryCollection(Resource):
-    
-    # @api.marshal_list_with(category_list)
     @jwt_required
     def get(self):
         """List all current categories"""
 
         user_identity = get_jwt_identity()
-        # create basse query object for pagination functionality
         created = User.query.filter_by(user_id=user_identity).first()
         user_cats = created.categories
         paged_cats = user_cats.paginate(error_out=False)
@@ -100,18 +94,15 @@ class CategoryItem(Resource):
         """ Updates an existing category """
         user_id = get_jwt_identity()
         edit_cat = Category.query.filter_by(user_id=user_id, category_id=category_id).first()
-        # print (edit_cat)
         if edit_cat is None:
             return {'message': 'No such category exists'}, 404
         data = request.get_json()
-        # print (data)
         edit_cat.category_name = data.get('category_name')
         edit_cat.category_description = data.get('category_description')
         db.session.add(edit_cat)
         db.session.commit()
         return {'message': 'Category successfully updated'}
 
-    #response for unowned category
     @api.response(204, 'Category successfully deleted.')
     @api.response(404, 'Not Found, Category does not exixt')
     @jwt_required

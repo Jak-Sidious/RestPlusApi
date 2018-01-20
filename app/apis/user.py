@@ -53,7 +53,6 @@ class UserLogin(Resource):
 
         username = data.get('username')
         password = data.get('password')
-        # email = data.get('email')
         user = User.query.filter_by(username=username).first()
         if user is None:
             return {"message": "User not registered"}, 404
