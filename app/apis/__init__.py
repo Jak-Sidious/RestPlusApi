@@ -23,6 +23,7 @@ api = Api(apiv1_bp,
     authorizations=authorization
 )
 
+
 api.add_namespace(ns1)
 api.add_namespace(ns2)
 api.add_namespace(ns3)
