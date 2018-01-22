@@ -97,7 +97,6 @@ class PasswordReset(Resource):
         '''Enable a user to succesfully reset their psssword'''
         userId = get_jwt_identity()
         user = User.query.filter_by(user_id=userId).first()
-        print (user.user_id)
         data = request.get_json()
         old_pass = data.get('old_password')
         if user.password_is_valid(old_pass):
