@@ -122,23 +122,49 @@ class CategoryTest(BaseTest):
                                     content_type="application/json",
                                     data=json.dumps(self.category_data))  
         msg = json.loads(catres.data)
+        self.assertIn(msg['message'], 'Category successfully created')
         self.assertEqual(catres.status_code, 201)  
 
-    # def test_categories_can_be_listed(self):    
-    #     '''Test that created categpries can be listed'''
-    #     res = self.app.post("/apiv1/users/register", 
-    #                         data=json.dumps(self.reg_data), 
-    #                         content_type="application/json")
-    #     res1 = self.app.post("/apiv1/users/login", 
-    #                         data=json.dumps(self.login_data), 
-    #                         content_type="application/json")
-    #     token = json.loads(res1.data)['token']
-    #     catres = self.client.post("/apiv1/category/create",
-    #                                 headers = {'Authorization': 'Bearer '+ token},
-    #                                 content_type="application/json",
-    #                                 data=json.dumps(self.category_data))
-    #     catres1 = self.client.post("/apiv1/category/create",
-    #                                 headers = {'Authorization': 'Bearer '+ token},
-    #                                 content_type="application/json",
-    #                                 data=json.dumps(self.category_data1))  
-    #     listres = self.client.get("/apiv1/category/list")       
+    def test_categories_can_be_listed(self):    
+        '''Test that created categpries can be listed'''
+        res = self.app.post("/apiv1/users/register", 
+                            data=json.dumps(self.reg_data), 
+                            content_type="application/json")
+        res1 = self.app.post("/apiv1/users/login", 
+                            data=json.dumps(self.login_data), 
+                            content_type="application/json")
+        token = json.loads(res1.data)['token']
+        catres = self.client.post("/apiv1/category/create",
+                                    headers = {'Authorization': 'Bearer '+ token},
+                                    content_type="application/json",
+                                    data=json.dumps(self.category_data))
+        catres1 = self.client.post("/apiv1/category/create",
+                                    headers = {'Authorization': 'Bearer '+ token},
+                                    content_type="application/json",
+                                    data=json.dumps(self.category_data1))  
+        listres = self.client.get("/apiv1/category/list",
+                                    headers = {'Authorization': 'Bearer '+ token},
+                                    content_type="application/json")  
+        self.assertEqual(listres.status_code, 200)
+
+    def test_user_can_get_a_category(self):
+        '''Test that a user can get a particular category'''
+        res = self.app.post("/apiv1/users/register", 
+                            data=json.dumps(self.reg_data), 
+                            content_type="application/json")
+        res1 = self.app.post("/apiv1/users/login", 
+                            data=json.dumps(self.login_data), 
+                            content_type="application/json")
+        token = json.loads(res1.data)['token']
+        createres = self.client.post("/apiv1/category/create",
+                                    headers = {'Authorization': 'Bearer '+ token},
+                                    content_type="application/json",
+                                    data=json.dumps(self.category_data))
+        msg = json.loads(createres.data)
+        cat_id_string = str(msg['category_id'])
+        getres = self.client.get("/apiv1/category/" + cat_id_string ,
+                                headers = {'Authorization': 'Bearer '+ token},
+                                content_type="application/json")
+        self.assertEqual(getres.status_code, 200)
+        
+

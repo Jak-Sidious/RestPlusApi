@@ -82,3 +82,5 @@ class UserTest(BaseTest):
         msg = json.loads(reset_res.data)
         self.assertIn(msg['message'], 'Password reset successfully')
         self.assertEqual(reset_res.status_code, 200)
+
+    

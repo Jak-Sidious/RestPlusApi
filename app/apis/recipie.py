@@ -74,7 +74,6 @@ class RecipieCollection(Resource):
             paginated.append(a_recipe)
 
         size = len(paginated)
-        print (size)
 
         if size == 0:
             return {'message': 'No Recipies created by this user'}, 404
@@ -105,7 +104,8 @@ class RecipieCreation(Resource):
                             created_by=user_id,
                             category_id=category_id)
         new_rec.save()
-        return {'message': 'Recipe successfully created.'}, 201
+        return {'Recipe id': new_rec.recipie_id,
+                'message': 'Recipe successfully created.'}, 201
 
 
 @api.route('/<int:category_id>/<int:recipie_id>')

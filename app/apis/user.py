@@ -79,6 +79,16 @@ class UserLogin(Resource):
 
         username = data.get('username')
         password = data.get('password')
+        validated_username = username_validate(username)
+        validated_password = password_validate(password)
+        if validated_username is False:
+            return {'message': 'Username is invalid it should contain' 
+                    ' alphanumeric charcaters followed by an underscore'
+                    ' of not more than 25 characters'}
+
+        if validated_password is False:
+            return {'message': 'Password must be between 6 and 25 alphanumeric'
+                    ' characters'}
         user = User.query.filter_by(username=username).first()
         if user is None:
             return {"message": "User not registered"}, 404
