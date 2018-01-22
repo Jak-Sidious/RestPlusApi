@@ -15,3 +15,10 @@ def password_validate(password):
     if password_pattern.match(password):
         return True
     return False
+
+def email_validate(email):
+    '''validate email matches a certain pattern'''
+    email_pattern = re.compile(r'(^[a-zA-Z0-9_.]+@[a-zA-Z0-9]+\.[a-zA-Z0-9.]+$)')
+    if email_pattern.match(email):
+        return True
+    return False
