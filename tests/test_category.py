@@ -11,8 +11,12 @@ class CategoryTest(BaseTest):
     def test_category_succesfully_created(self):
         
         '''Test that a catgory can be created'''
-        res = self.app.post("/apiv1/users/register", data=json.dumps(self.reg_data), content_type="application/json")
-        res1 = self.app.post("/apiv1/users/login", data=json.dumps(self.login_data), content_type="application/json")
+        res = self.app.post("/apiv1/users/register", 
+                            data=json.dumps(self.reg_data), 
+                            content_type="application/json")
+        res1 = self.app.post("/apiv1/users/login", 
+                            data=json.dumps(self.login_data), 
+                            content_type="application/json")
         token = json.loads(res1.data)['token']
         
         catres = self.client.post("/apiv1/category/create",
@@ -26,8 +30,12 @@ class CategoryTest(BaseTest):
 
     def test_category_cant_be_created_twice(self):
         '''Test that categories can be listed'''
-        res = self.app.post("/apiv1/users/register", data=json.dumps(self.reg_data), content_type="application/json")
-        res1 = self.app.post("/apiv1/users/login", data=json.dumps(self.login_data), content_type="application/json")
+        res = self.app.post("/apiv1/users/register", 
+                            data=json.dumps(self.reg_data), 
+                            content_type="application/json")
+        res1 = self.app.post("/apiv1/users/login", 
+                            data=json.dumps(self.login_data), 
+                            content_type="application/json")
         token = json.loads(res1.data)['token']
         catres = self.client.post("/apiv1/category/create",
                                     headers = {'Authorization': 'Bearer '+ token}, 
@@ -43,8 +51,12 @@ class CategoryTest(BaseTest):
 
     def test_can_edit_category(self):
         '''Test that category can be edited'''
-        res = self.app.post("/apiv1/users/register", data=json.dumps(self.reg_data), content_type="application/json")
-        res1 = self.app.post("/apiv1/users/login", data=json.dumps(self.login_data), content_type="application/json")
+        res = self.app.post("/apiv1/users/register", 
+                            data=json.dumps(self.reg_data), 
+                            content_type="application/json")
+        res1 = self.app.post("/apiv1/users/login", 
+                            data=json.dumps(self.login_data), 
+                            content_type="application/json")
         token = json.loads(res1.data)['token']
         catres = self.client.post("/apiv1/category/create",
                                     headers = {'Authorization': 'Bearer '+ token}, 
@@ -59,8 +71,12 @@ class CategoryTest(BaseTest):
         self.assertEqual(msg['message'], 'Category successfully updated')
 
     def test_can_view_category(self):
-        res = self.app.post("/apiv1/users/register", data=json.dumps(self.reg_data), content_type="application/json")
-        res1 = self.app.post("/apiv1/users/login", data=json.dumps(self.login_data), content_type="application/json")
+        res = self.app.post("/apiv1/users/register", 
+                            data=json.dumps(self.reg_data), 
+                            content_type="application/json")
+        res1 = self.app.post("/apiv1/users/login", 
+                            data=json.dumps(self.login_data), 
+                            content_type="application/json")
         token = json.loads(res1.data)['token']
         catres = self.client.post("/apiv1/category/create",
                                     headers = {'Authorization': 'Bearer '+ token}, 
@@ -74,15 +90,55 @@ class CategoryTest(BaseTest):
         self.assertEqual(catres.status_code, 201)
 
     def test_can_delete_category(self):
-        res = self.app.post("/apiv1/users/register", data=json.dumps(self.reg_data), content_type="application/json")
-        res1 = self.app.post("/apiv1/users/login", data=json.dumps(self.login_data), content_type="application/json")
+        '''Test that a ctageory can be deleted'''
+        res = self.app.post("/apiv1/users/register", 
+                            data=json.dumps(self.reg_data), 
+                            content_type="application/json")
+        res1 = self.app.post("/apiv1/users/login", 
+                            data=json.dumps(self.login_data), 
+                            content_type="application/json")
         token = json.loads(res1.data)['token']
         catres = self.client.post("/apiv1/category/create",
                                     headers = {'Authorization': 'Bearer '+ token}, 
                                     content_type="application/json",
                                     data=json.dumps(self.category_data))
         catdelete = self.client.delete("/apiv1/category/1",
-                                headers = {'Authorization': 'Bearer '+ token}, 
-                                content_type="application/json",
-                                data=json.dumps(self.category_data1))
+                                    headers = {'Authorization': 'Bearer '+ token}, 
+                                    content_type="application/json",
+                                    data=json.dumps(self.category_data1))
         self.assertEqual(catdelete.status_code, 204)
+    
+    def test_category_cant_be_created_without_authorization(self):
+        '''Test that a category cannot be created without authorization'''
+        res = self.app.post("/apiv1/users/register", 
+                            data=json.dumps(self.reg_data), 
+                            content_type="application/json")
+        res1 = self.app.post("/apiv1/users/login", 
+                            data=json.dumps(self.login_data), 
+                            content_type="application/json")
+        token = json.loads(res1.data)['token']
+        catres = self.client.post("/apiv1/category/create",
+                                    headers = {'Authorization': 'Bearer '+ token},
+                                    content_type="application/json",
+                                    data=json.dumps(self.category_data))  
+        msg = json.loads(catres.data)
+        self.assertEqual(catres.status_code, 201)  
+
+    # def test_categories_can_be_listed(self):    
+    #     '''Test that created categpries can be listed'''
+    #     res = self.app.post("/apiv1/users/register", 
+    #                         data=json.dumps(self.reg_data), 
+    #                         content_type="application/json")
+    #     res1 = self.app.post("/apiv1/users/login", 
+    #                         data=json.dumps(self.login_data), 
+    #                         content_type="application/json")
+    #     token = json.loads(res1.data)['token']
+    #     catres = self.client.post("/apiv1/category/create",
+    #                                 headers = {'Authorization': 'Bearer '+ token},
+    #                                 content_type="application/json",
+    #                                 data=json.dumps(self.category_data))
+    #     catres1 = self.client.post("/apiv1/category/create",
+    #                                 headers = {'Authorization': 'Bearer '+ token},
+    #                                 content_type="application/json",
+    #                                 data=json.dumps(self.category_data1))  
+    #     listres = self.client.get("/apiv1/category/list")       
