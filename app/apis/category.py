@@ -1,5 +1,5 @@
 from flask import request
-from flask_restplus import Resource, Namespace, fields, marshal
+from flask_restplus import Resource, Namespace, fields, marshal, reqparse
 from flask_jwt_extended import jwt_required, get_jwt_identity
 # from app.apis.functionality.functions import edit_category, category_list
 
@@ -25,17 +25,41 @@ category_list = api.model('category', {
     'date_modified' : fields.DateTime(readOnnly=True, description = 'date modified')
 })
 
+Q_Parser = reqparse.RequestParser(bundle_errors=True)
+Q_Parser.add_argument('q', required=False,
+                        help='search for word', location='args')
+Q_Parser.add_argument('page', required=False, type=int,
+                        help='Number of pages', location='args')
+Q_Parser.add_argument('per_page', required=False, type=int,
+                        help='categories per page', default=10, location='args')
+
 
 @api.route('/list')
+
 class CategoryCollection(Resource):
     @jwt_required
+    @api.expect(Q_Parser)
+    @api.response(404, 'This user has no categories')
     def get(self):
         '''List all current categories'''
 
         user_identity = get_jwt_identity()
-        created = User.query.filter_by(user_id=user_identity).first()
-        user_cats = created.categories
-        paged_cats = user_cats.paginate(error_out=False)
+        # created = User.query.filter_by(user_id=user_identity).first()
+        the_cat = Category.query.filter_by(user_id=user_identity)
+        print (the_cat)
+        args = Q_Parser.parse_args(request)
+        q = args.get('q', '')
+        page = args.get('page', 1)
+        per_page = args.get('per_page', 10)
+        if q:
+            the_cat = Category.query.filter(
+                                Category.category_name.like("%" + q + "%"))
+
+            # for a_category in the_categories:
+            
+        paged_cats = the_cat.paginate(page, per_page, error_out=False)
+        if not paged_cats.items:
+            return {'message': 'This user has no categories'}, 404
         paginated=[]
         for a_category in paged_cats.items:
             paginated.append(a_category)
