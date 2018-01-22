@@ -8,8 +8,9 @@ from flask_jwt_extended import (
 from app import db
 from app.models.user import User
 from app.models.blacklist import Blacklist
-# from app.apis.functionality.functions import (
-#     user_signup, user_login)
+from .functionality.validate import (
+    username_validate, password_validate, email_validate
+    )                                   
     
 api = Namespace('users', description='User sign up and login operations')
 
@@ -42,6 +43,21 @@ class UserRegistration(Resource):
         username = data.get('username')
         password = data.get('password')
         email = data.get('email')
+        validated_username = username_validate(username)
+        validated_password = password_validate(password)
+        validated_email = email_validate(email)
+
+        if validated_username is False:
+            return {'message': 'Username is invalid it should contain' 
+                    ' alphanumeric charcaters followed by an underscore'
+                    ' of not more than 25 characters'}
+
+        if validated_password is False:
+            return {'message': 'Password must be between 6 and 25 alphanumeric'
+                    ' characters'}
+        
+        if validated_email is False:
+            return {'message': 'Email needs to be in the format ###@###.###'} 
         user = User.query.filter_by(username=username).first()
         if user is None:
             user = User(username=username, password=password, email=email)
