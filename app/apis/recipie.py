@@ -1,5 +1,5 @@
 from flask import request
-from flask_restplus import Resource, Namespace, fields, marshal
+from flask_restplus import Resource, Namespace, fields, marshal, reqparse
 from flask_jwt_extended import jwt_required, get_jwt_identity
 from app import db
 from app.models.user import User
@@ -38,11 +38,19 @@ category_list = api.model('category', {
 
 })
 
+Q_Parser = reqparse.RequestParser(bundle_errors=True)
+Q_Parser.add_argument('q', required=False,
+                        help='search for word', location='args')
+Q_Parser.add_argument('page', required=False, type=int,
+                        help='Number of pages', location='args')
+Q_Parser.add_argument('per_page', required=False, type=int,
+                        help='categories per page', default=10, location='args')
 
 @api.route('/<int:category_id>/list')
 class RecipieCollection(Resource):
     @api.response(404, 'No Recipies created by this user')
     @api.response(200, 'Recipies found')
+    @api.expect(Q_Parser)
     @jwt_required
     def get(self, category_id):
         '''Returns a list of Recipies for a particular category'''
@@ -50,9 +58,17 @@ class RecipieCollection(Resource):
         user_id = get_jwt_identity()
         the_recz = Recipie.query.filter_by(created_by=user_id,
                                             category_id=category_id)
+        args = Q_Parser.parse_args(request)
+        q = args.get('q', '')
+        page = args.get('page', 1)
+        per_page = args.get('per_page', 10)
+        if q:
+            the_recz = Recipie.query.filter(
+                Recipie.recipie_name.like("%" + q + "%"))
+        
         if the_recz is None:
             return {'message': 'No Recipies created by this user'}, 404
-        paged_recs = the_recz.paginate(error_out=False)
+        paged_recs = the_recz.paginate(page, per_page, error_out=False)
         paginated = []
         for a_recipe in paged_recs.items:
             paginated.append(a_recipe)
