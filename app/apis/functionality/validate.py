@@ -8,3 +8,10 @@ def username_validate(username):
     if username_pattern.match(username):
         return True
     return False
+
+def password_validate(password):
+    '''validate to ensure that username inout matches the string structure'''
+    password_pattern = re.compile(r'^[a-zA-Z0-9]{6,25}$')
+    if password_pattern.match(password):
+        return True
+    return False
