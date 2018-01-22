@@ -57,7 +57,7 @@ class UserRegistration(Resource):
                     ' characters'}
         
         if validated_email is False:
-            return {'message': 'Password needs to be in the format ###@###.###'} 
+            return {'message': 'Email needs to be in the format ###@###.###'} 
         user = User.query.filter_by(username=username).first()
         if user is None:
             user = User(username=username, password=password, email=email)
