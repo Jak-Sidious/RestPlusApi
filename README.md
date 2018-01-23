@@ -6,18 +6,18 @@ This is an API for a Recipies Service using Flask. Users can register an account
 
 | EndPoint                                                   | Functionality                                    |
 | ---------------------------------------------------------- | ------------------------------------------------ |
-| [ POST /user/login/ ](#)                                   | Logs a user in                                   |
-| [ POST /user/register/ ](#)                                | Register a user                                  |
+| [ POST /users/login/ ](#)                                  | Logs a user in                                   |
+| [ POST /users/register/ ](#)                               | Register a user                                  |
 | [ DELETE /auth/logout/ ](#)                                | Logout a user                                    |
-| [ POST /category/\create/ ](#)                             | Create a category                                |
-| [ GET /category/\list/ ](#)                                | List all categories                              |
-| [ DELETE /category/\<category_id>/ ](#)                    | Delete the category                              |
-| [ GET /category/\<category_id>/ ](#)                       | List all categories for a particluar user        |
-| [ POST /category/<category_id>/recipe/Create ](#)          | Create a recipie for a particular user           |
-| [ GET /category/<category_id>/recipe/List](#)              | Get all recipes in the specified category id     |
-| [ DELETE /category/<category_id>/recipe/Recipe item](#)    | Get a recipe in the specified category id        |
-| [ GET /category/<category_id>/recipe/Recipe item](#)       | Update the recipe in the specified category id   |
-| [ PUT /category/<category_id>/recipe/Recipe item](#)       | Delete the recipe in the specified category id   |
+| [ POST /category/create/ ](#)                              | Create a category                                |
+| [ GET /category/list/list?q=1&page=5&per_page=10 ](#)      | List all categories                              |
+| [ DELETE /category/<category_id>/ ](#)                     | Delete the category                              |
+| [ GET /category/<category_id>/ ](#)                        | List all categories for a particluar user        |
+| [ POST /recipes/<category_id>/create ](#)                  | Create a recipie for a particular user           |
+| [ GET /recipes/1/list?q=like&page=5&per_page=10](#)        | Get all recipes in the specified category id     |
+| [ DELETE /recipes/<category_id>/<recipie_id>](#)           | Get a recipe in the specified category id        |
+| [ GET /recipes/<category_id>/<recipie_id>](#)              | Update the recipe in the specified category id   |
+| [ PUT /recipes/<category_id>/2<recipie_id>](#)             | Delete the recipe in the specified category id   |
 
 ## Setup
 
