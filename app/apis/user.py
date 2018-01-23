@@ -25,7 +25,7 @@ user_login = api.model('users', {
     'password' : fields.String(required=True, description='password required to grant a user access'),
 })
 
-password_reset = api.model('password rest', {
+password_reset = api.model('password reset', {
     'old_password' : fields.String(required=True, description='existing user password'),
     'new_password' : fields.String(required=True, description='password to change to')
 })

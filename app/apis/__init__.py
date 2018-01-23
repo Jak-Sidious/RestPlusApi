@@ -1,7 +1,7 @@
 from flask import Blueprint, jsonify, make_response
 from flask_restplus import Api
 # from .user import api as ns1
-
+from .user import api as ns1
 
 authorization = {
     'apiKey': {
@@ -21,7 +21,7 @@ api = Api(apiv1_bp,
     description='An api to create, read, update and delete recipes',
     authorizations=authorization
 )
-from .user import api as ns1
+
 from .category import api as ns2
 from .recipie import api as ns3
 
