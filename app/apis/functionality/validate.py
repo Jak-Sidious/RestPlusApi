@@ -21,4 +21,4 @@ def email_validate(email):
     email_pattern = re.compile(r'(^[a-zA-Z0-9_.]+@[a-zA-Z0-9]+\.[a-zA-Z0-9.]+$)')
     if email_pattern.match(email):
         return True
-    return False 
+    return False
