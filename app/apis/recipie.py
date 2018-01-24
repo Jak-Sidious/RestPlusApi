@@ -55,6 +55,7 @@ class RecipieCollection(Resource):
         if q:
             the_recz = Recipie.query.filter(
                 Recipie.recipie_name.like("%" + q + "%"))
+                
         
         if the_recz is None:
             return {'message': 'No Recipies created by this user'}, 404

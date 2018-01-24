@@ -58,15 +58,18 @@ class UserRegistration(Resource):
         
         if validated_email is False:
             return {'message': 'Email needs to be in the format ###@###.###'} 
-        user = User.query.filter_by(username=username).first()
-        if user is None:
-            user = User(username=username, password=password, email=email)
-            user.save()
+        # user = User.query.filter_by(username=username,
+        #                             password=password,
+        #                             email=email).first()
+        if User.query.filter_by(username=username).first() is not None:
+            return {"message": f"Username {username} already exists"}, 409
+        if User.query.filter_by(email=email).first() is not None:
+            return {"message": f"email {email} already exists"}, 409
+        user = User(username=username, password=password, email=email)
+        user.save()
+                
+        return {"message": "User succesfully registered"} , 201
             
-            return {"message": "User succesfully registered"} , 201
-        else:
-            return {"message": "User already exists"}, 409
-
 
 @api.route('/login')
 class UserLogin(Resource):

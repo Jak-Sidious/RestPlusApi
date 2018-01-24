@@ -112,16 +112,16 @@ class CategoryItem(Resource):
     def get(self, category_id):
         '''Returns a particular category'''
         user_id = get_jwt_identity()
-        response = Category.query.filter_by(user_id=user_id, 
+        request_cat = Category.query.filter_by(user_id=user_id, 
                                         category_id=category_id).first()
-        if response is None:
+        print(request_cat)
+        if request_cat is None:
             return {'message': 'The Category you are querying does not exist.'}, 404
-        return marshal(response, category_list)
+        return marshal(request_cat, category_list)
         
 
     @api.response(204, 'Category successfully updated.')
     @api.response(404, "No such category exists")
-    @api.response(403, "Forbidden, You don't own this category")
     @jwt_required
     @api.expect(edit_category)
     def put(self, category_id):
@@ -137,7 +137,7 @@ class CategoryItem(Resource):
         db.session.commit()
         return {'message': 'Category successfully updated'}
 
-    @api.response(204, 'Category successfully deleted.')
+    @api.response(200, 'Category successfully deleted.')
     @api.response(404, 'Not Found, Category does not exixt')
     @jwt_required
     def delete(self, category_id):
@@ -148,5 +148,5 @@ class CategoryItem(Resource):
         if the_cat is not None:
             db.session.delete(the_cat)
             db.session.commit()
-            return {'message': 'Category successfully deleted.'}, 204
+            return {'message': 'Category successfully deleted.'}, 200
         return {'message' : 'Not Found, Category does not exixt'}, 404
