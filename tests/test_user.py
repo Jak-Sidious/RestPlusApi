@@ -5,8 +5,6 @@ from app.models.user import User
 class UserTest(BaseTest):
     '''Tests for the user category'''
 
-    
-    # pass and fail tests
     def test_registration_succesful(self):
         '''Ensure a user can be added to the database'''
         

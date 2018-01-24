@@ -12,7 +12,6 @@ app = Flask(__name__)
 
 from app.apis import apiv1_bp
 app.register_blueprint(apiv1_bp , url_prefix='/apiv1')
-# return app
 
 if __name__ == '__main__':
     app.run()
