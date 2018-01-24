@@ -1,4 +1,4 @@
-[![Build Status](https://travis-ci.org/Jak-Sidious/RestPlusApi.svg?branch=Crud-Functionality-2)](https://travis-ci.org/Jak-Sidious/RestPlusApi)  [![Coverage Status](https://coveralls.io/repos/github/Jak-Sidious/FlaskAPI/badge.svg?branch=master)](https://coveralls.io/github/Jak-Sidious/FlaskAPI?branch=master)   [![Maintainability](https://api.codeclimate.com/v1/badges/c7422200c78aacd4c9eb/maintainability)](https://codeclimate.com/github/Jak-Sidious/RestPlusApi/maintainability)   [![Test Coverage](https://api.codeclimate.com/v1/badges/c7422200c78aacd4c9eb/test_coverage)](https://codeclimate.com/github/Jak-Sidious/RestPlusApi/test_coverage)
+[![Build Status](https://travis-ci.org/Jak-Sidious/RestPlusApi.svg?branch=Crud-Functionality-2)](https://travis-ci.org/Jak-Sidious/RestPlusApi) [![Maintainability](https://api.codeclimate.com/v1/badges/c7422200c78aacd4c9eb/maintainability)](https://codeclimate.com/github/Jak-Sidious/RestPlusApi/maintainability) [![Coverage Status](https://coveralls.io/repos/github/Jak-Sidious/FlaskAPI/badge.svg?branch=chore-refactoring-for-code-climate)](https://coveralls.io/github/Jak-Sidious/FlaskAPI?branch=chore-refactoring-for-code-climate)
 
 # Project Title
 
@@ -6,18 +6,18 @@ This is an API for a Recipies Service using Flask. Users can register an account
 
 | EndPoint                                                   | Functionality                                    |
 | ---------------------------------------------------------- | ------------------------------------------------ |
-| [ POST /user/login/ ](#)                                   | Logs a user in                                   |
-| [ POST /user/register/ ](#)                                | Register a user                                  |
+| [ POST /users/login/ ](#)                                  | Logs a user in                                   |
+| [ POST /users/register/ ](#)                               | Register a user                                  |
 | [ DELETE /auth/logout/ ](#)                                | Logout a user                                    |
-| [ POST /category/\create/ ](#)                             | Create a category                                |
-| [ GET /category/\list/ ](#)                                | List all categories                              |
-| [ DELETE /category/\<category_id>/ ](#)                    | Delete the category                              |
-| [ GET /category/\<category_id>/ ](#)                       | List all categories for a particluar user        |
-| [ POST /category/<category_id>/recipe/Create ](#)          | Create a recipie for a particular user           |
-| [ GET /category/<category_id>/recipe/List](#)              | Get all recipes in the specified category id     |
-| [ DELETE /category/<category_id>/recipe/Recipe item](#)    | Get a recipe in the specified category id        |
-| [ GET /category/<category_id>/recipe/Recipe item](#)       | Update the recipe in the specified category id   |
-| [ PUT /category/<category_id>/recipe/Recipe item](#)       | Delete the recipe in the specified category id   |
+| [ POST /category/create/ ](#)                              | Create a category                                |
+| [ GET /category/list/list?q=" "&page=#&per_page=#](#)      | List all categories                              |
+| [ DELETE /category/<category_id>/ ](#)                     | Delete the category                              |
+| [ GET /category/<category_id>/ ](#)                        | List all categories for a particluar user        |
+| [ POST /recipes/<category_id>/create ](#)                  | Create a recipie for a particular user           |
+| [ GET /recipes/<category_id>/list?q=#&page=#&per_page=#](#)| Get all recipes in the specified category id     |
+| [ DELETE /recipes/<category_id>/<recipie_id>](#)           | Get a recipe in the specified category id        |
+| [ GET /recipes/<category_id>/<recipie_id>](#)              | Update the recipe in the specified category id   |
+| [ PUT /recipes/<category_id>/2<recipie_id>](#)             | Delete the recipe in the specified category id   |
 
 ## Setup
 

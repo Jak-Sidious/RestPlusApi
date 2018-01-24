@@ -36,6 +36,14 @@ class BaseTest(TestCase):
             "recipie_name": "Test name",
             "ingredients": " Test ingredients"
         }
+        self.recipe_data1 = {
+            "recipie_name": "Test name1",
+            "ingredients": " Test ingredients1"
+        }
+        self.password_reset_data = {
+            "old_password": "testuser12345",
+            "new_password": "testuser123"
+        }
         db.create_all()
 
     def tearDown(self):

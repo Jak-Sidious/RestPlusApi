@@ -27,16 +27,6 @@ recipie_data = api.model('create recipie', {
     'ingredients': fields.String(required=True, description='The ingredients for this recipie')
 })
 
-category_list = api.model('category', {
-    'user_id': fields.Integer(readOnly=True, description='User that made the category'),
-    'category_id': fields.Integer(readOnly=True, description='Unique identifier for each category'),
-    'category_name': fields.String(required=True, description='category name'),
-    'category_description': fields.String(required=True, description='A description about the current category'),
-    'date_created': fields.DateTime(readOnly=True, description='Date created'),
-    'date_modified': fields.DateTime(readOnnly=True, description='date modified'),
-    'recipies': fields.String(readOnly=True, description='Recipies belonging to a certain category')
-
-})
 
 Q_Parser = reqparse.RequestParser(bundle_errors=True)
 Q_Parser.add_argument('q', required=False,
@@ -74,7 +64,6 @@ class RecipieCollection(Resource):
             paginated.append(a_recipe)
 
         size = len(paginated)
-        print (size)
 
         if size == 0:
             return {'message': 'No Recipies created by this user'}, 404
@@ -105,7 +94,8 @@ class RecipieCreation(Resource):
                             created_by=user_id,
                             category_id=category_id)
         new_rec.save()
-        return {'message': 'Recipe successfully created.'}, 201
+        return {'Recipe id': new_rec.recipie_id,
+                'message': 'Recipe successfully created.'}, 201
 
 
 @api.route('/<int:category_id>/<int:recipie_id>')

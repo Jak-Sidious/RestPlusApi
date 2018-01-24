@@ -34,6 +34,16 @@ Q_Parser.add_argument('per_page', required=False, type=int,
                         help='categories per page', default=10, location='args')
 
 
+
+Q_Parser = reqparse.RequestParser(bundle_errors=True)
+Q_Parser.add_argument('q', required=False,
+                        help='search for word', location='args')
+Q_Parser.add_argument('page', required=False, type=int,
+                        help='Number of pages', location='args')
+Q_Parser.add_argument('per_page', required=False, type=int,
+                        help='categories per page', default=10, location='args')
+
+
 @api.route('/list')
 
 class CategoryCollection(Resource):
