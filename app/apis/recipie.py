@@ -12,7 +12,7 @@ from app.apis.functionality.validate import name_validate
 
 api = Namespace('recipie',
                 description='Recipie related functionality',
-                path='/recipes/')
+                path='/category/recipes/')
 
 recipe = api.model('recipie', {
     'recipie_id': fields.Integer(readOnly=True, description='recipie unique identifier'),

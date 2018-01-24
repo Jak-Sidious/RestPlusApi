@@ -10,7 +10,7 @@ This is an API for a Recipies Service using Flask. Users can register an account
 | [ POST /users/register/ ](#)                               | Register a user                                  |
 | [ DELETE /auth/logout/ ](#)                                | Logout a user                                    |
 | [ POST /category/create/ ](#)                              | Create a category                                |
-| [ GET /category/list/list?q=" "&page=#&per_page=#](#)      | List all categories                              |
+| [ GET /category/list/](#)                                  | List all categories                              |
 | [ DELETE /category/<category_id>/ ](#)                     | Delete the category                              |
 | [ GET /category/<category_id>/ ](#)                        | List all categories for a particluar user        |
 | [ POST /recipes/<category_id>/create ](#)                  | Create a recipie for a particular user           |
