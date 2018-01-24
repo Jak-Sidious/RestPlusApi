@@ -106,7 +106,7 @@ class CategoryTest(BaseTest):
                                     headers = {'Authorization': 'Bearer '+ token}, 
                                     content_type="application/json",
                                     data=json.dumps(self.category_data1))
-        self.assertEqual(catdelete.status_code, 204)
+        self.assertEqual(catdelete.status_code, 200)
     
     def test_category_cant_be_created_without_authorization(self):
         '''Test that a category cannot be created without authorization'''

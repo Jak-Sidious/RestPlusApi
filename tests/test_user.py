@@ -49,7 +49,7 @@ class UserTest(BaseTest):
                             data=json.dumps(self.reg_data), 
                             content_type="application/json")
         msg = json.loads(res1.data)
-        self.assertIn(msg['message'], 'User already exists')
+        self.assertIn(msg['message'], 'Username testuser already exists')
         self.assertEqual(res1.status_code, 409)
 
     def test_user_can_logout(self):
