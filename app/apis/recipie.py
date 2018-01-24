@@ -1,11 +1,14 @@
 from flask import request
 from flask_restplus import Resource, Namespace, fields, marshal, reqparse
 from flask_jwt_extended import jwt_required, get_jwt_identity
+
+
 from app import db
 from app.models.user import User
 from app.models.recipie import Recipie
 
 from app.models.category import Category
+from app.apis.functionality.validate import name_validate
 
 api = Namespace('recipie',
                 description='Recipie related functionality',
@@ -85,6 +88,15 @@ class RecipieCreation(Resource):
         ingredients = data.get('ingredients')
         user_id = get_jwt_identity()
         category_id = category_id
+        recname_validate = name_validate(rec_name)
+        ingredients_validate = name_validate(ingredients)
+
+        if recname_validate is False:
+            return {"message": "Recipe name cannot be blank, please enter "
+                    "valid input"}
+        if ingredients_validate is False:
+            return {"message": "Ingredients cannot be blank, please enter "
+                    "valid input"}
         if Recipie.query.filter_by(
                 created_by=user_id,
                 category_id=category_id,

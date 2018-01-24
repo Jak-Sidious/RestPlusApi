@@ -1,7 +1,7 @@
 from flask import request
 from flask_restplus import Resource, Namespace, fields, marshal, reqparse
 from flask_jwt_extended import jwt_required, get_jwt_identity
-# from app.apis.functionality.functions import edit_category, category_list
+from app.apis.functionality.validate import name_validate
 
 from app import db
 from app.models.user import User
@@ -88,6 +88,14 @@ class CategoryCreation(Resource):
         data = request.get_json()
         categoryName = data.get('category_name')
         categoryDesc = data.get('category_description')
+        catName_validator = name_validate(categoryName)
+        catDesc_validator = name_validate(categoryDesc)
+
+        if catName_validator is False:
+            return {"message": "category name cannot be blank"}
+        if catDesc_validator is False:
+            return {"message": "category description cannot be blank, please" 
+                    " enter a valid description"}
         user_id = get_jwt_identity()
         if Category.query.filter_by(
                     user_id=user_id,

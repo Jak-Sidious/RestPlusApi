@@ -22,3 +22,14 @@ def email_validate(email):
     if email_pattern.match(email):
         return True
     return False
+
+def name_validate(name):
+    '''validate recipie and category names to ensure that they are not null'''
+    name_pattern = re.compile(r'^[a-zA-Z\s]+')
+    result = name_pattern.match(name)
+    if result is None:
+        return False
+    result = result.group()
+    if len(result) is len(name):
+        return True
+    return False
