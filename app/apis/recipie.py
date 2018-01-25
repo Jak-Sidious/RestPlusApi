@@ -12,7 +12,7 @@ from app.apis.functionality.validate import name_validate
 
 api = Namespace('recipie',
                 description='Recipie related functionality',
-                path='/category/recipes/')
+                path='/category')
 
 recipe = api.model('recipie', {
     'recipie_id': fields.Integer(readOnly=True, description='recipie unique identifier'),
@@ -39,7 +39,7 @@ Q_Parser.add_argument('page', required=False, type=int,
 Q_Parser.add_argument('per_page', required=False, type=int,
                         help='categories per page', default=10, location='args')
 
-@api.route('/<int:category_id>/list')
+@api.route('/<int:category_id>/recipes/list')
 class RecipieCollection(Resource):
     @api.response(404, 'No Recipies created by this user')
     @api.response(200, 'Recipies found')
@@ -75,7 +75,7 @@ class RecipieCollection(Resource):
 
 
 
-@api.route('/<int:category_id>/create')
+@api.route('/<int:category_id>/recipes/create')
 class RecipieCreation(Resource):
     @api.response(201, 'Recipe successfully created.')
     @api.response(409, 'Conflict, Recipie already exists')
@@ -111,7 +111,7 @@ class RecipieCreation(Resource):
                 'message': 'Recipe successfully created.'}, 201
 
 
-@api.route('/<int:category_id>/<int:recipie_id>')
+@api.route('/<int:category_id>/recipes/<int:recipie_id>')
 @api.response(404, 'The Recipe you are querying does not exist.')
 class RecipeItem(Resource):
     @api.response(200, 'Recipie Located')
