@@ -122,7 +122,6 @@ class CategoryItem(Resource):
         user_id = get_jwt_identity()
         request_cat = Category.query.filter_by(user_id=user_id, 
                                         category_id=category_id).first()
-        print(request_cat)
         if request_cat is None:
             return {'message': 'The Category you are querying does not exist.'}, 404
         return marshal(request_cat, category_list)

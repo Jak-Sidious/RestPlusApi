@@ -25,7 +25,7 @@ class RecipeTest(BaseTest):
                                     data=json.dumps(self.category_data))
         rec_create = json.loads(cat.data)
                                     
-        rec = self.client.post("/apiv1/recipes/1/create",
+        rec = self.client.post("/apiv1/category/recipes/1/create",
                                     headers = {'Authorization': 'Bearer '+ token}, 
                                     content_type="application/json",
                                     data=json.dumps(self.recipe_data))
@@ -49,11 +49,11 @@ class RecipeTest(BaseTest):
                                     content_type="application/json",
                                     data=json.dumps(self.category_data))
                                     
-        rec = self.client.post("/apiv1/recipes/1/create",
+        rec = self.client.post("/apiv1/category/recipes/1/create",
                                     headers = {'Authorization': 'Bearer '+ token}, 
                                     content_type="application/json",
                                     data=json.dumps(self.recipe_data))
-        rec2 = self.client.post("/apiv1/recipes/1/create",
+        rec2 = self.client.post("/apiv1/category/recipes/1/create",
                                     headers = {'Authorization': 'Bearer '+ token}, 
                                     content_type="application/json",
                                     data=json.dumps(self.recipe_data))
@@ -75,15 +75,15 @@ class RecipeTest(BaseTest):
                                     headers = {'Authorization': 'Bearer '+ token}, 
                                     content_type="application/json",
                                     data=json.dumps(self.category_data))
-        rec = self.client.post("/apiv1/recipes/1/create",
+        rec = self.client.post("/apiv1/category/recipes/1/create",
                                     headers = {'Authorization': 'Bearer '+ token}, 
                                     content_type="application/json",
                                     data=json.dumps(self.recipe_data))
-        rec2 = self.client.post("/apiv1/recipes/1/create",
+        rec2 = self.client.post("/apiv1/category/recipes/1/create",
                                     headers = {'Authorization': 'Bearer '+ token}, 
                                     content_type="application/json",
                                     data=json.dumps(self.recipe_data1))
-        listres = self.client.get("apiv1/recipes/1/list",
+        listres = self.client.get("apiv1/category/recipes/1/list",
                                     headers = {'Authorization': 'Bearer '+ token}, 
                                     content_type="application/json")
         self.assertEqual(listres.status_code, 200)
@@ -102,11 +102,11 @@ class RecipeTest(BaseTest):
                                     headers = {'Authorization': 'Bearer '+ token}, 
                                     content_type="application/json",
                                     data=json.dumps(self.category_data))
-        rec = self.client.post("/apiv1/recipes/1/create",
+        rec = self.client.post("/apiv1/category/recipes/1/create",
                                     headers = {'Authorization': 'Bearer '+ token}, 
                                     content_type="application/json",
                                     data=json.dumps(self.recipe_data))
-        view_res = self.client.get("/apiv1/recipes/1/1",
+        view_res = self.client.get("/apiv1/category/recipes/1/1",
                                     headers = {'Authorization': 'Bearer '+ token}, 
                                     content_type="application/json")
         self.assertEqual(view_res.status_code, 200)
@@ -124,11 +124,11 @@ class RecipeTest(BaseTest):
                                     headers = {'Authorization': 'Bearer '+ token}, 
                                     content_type="application/json",
                                     data=json.dumps(self.category_data))
-        rec = self.client.post("/apiv1/recipes/1/create",
+        rec = self.client.post("/apiv1/category/recipes/1/create",
                                     headers = {'Authorization': 'Bearer '+ token}, 
                                     content_type="application/json",
                                     data=json.dumps(self.recipe_data))
-        edit_rec = self.client.put("/apiv1/recipes/1/1",
+        edit_rec = self.client.put("/apiv1/category/recipes/1/1",
                                     headers = {'Authorization': 'Bearer '+ token},
                                     content_type="application/json",
                                     data=json.dumps(self.recipe_data1))
@@ -149,11 +149,11 @@ class RecipeTest(BaseTest):
                                     headers = {'Authorization': 'Bearer '+ token}, 
                                     content_type="application/json",
                                     data=json.dumps(self.category_data))
-        rec = self.client.post("/apiv1/recipes/1/create",
+        rec = self.client.post("/apiv1/category/recipes/1/create",
                                     headers = {'Authorization': 'Bearer '+ token}, 
                                     content_type="application/json",
                                     data=json.dumps(self.recipe_data))
-        delete_rec = self.client.delete("/apiv1/recipes/1/1",
+        delete_rec = self.client.delete("/apiv1/category/recipes/1/1",
                                         headers = {'Authorization': 'Bearer '+ token}, 
                                         content_type="application/json",
                                         data=json.dumps(self.recipe_data))
