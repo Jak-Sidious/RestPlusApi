@@ -28,27 +28,17 @@ category_list = api.model('category', {
 Q_Parser = reqparse.RequestParser(bundle_errors=True)
 Q_Parser.add_argument('q', required=False,
                         help='search for word', location='args')
-# Q_Parser.add_argument('page', required=False, type=int,
-#                         help='Number of pages', location='args')
-# Q_Parser.add_argument('per_page', required=False, type=int,
-#                         help='categories per page', default=10, location='args')
-
-
-
-# Q_Parser = reqparse.RequestParser(bundle_errors=True)
-# Q_Parser.add_argument('q', required=False,
-#                         help='search for word', location='args')
-# Q_Parser.add_argument('page', required=False, type=int,
-#                         help='Number of pages', location='args')
-# Q_Parser.add_argument('per_page', required=False, type=int,
-#                         help='categories per page', default=10, location='args')
+Q_Parser.add_argument('page', required=False, type=int,
+                        help='Number of pages', location='args')
+Q_Parser.add_argument('per_page', required=False, type=int,
+                        help='categories per page', default=10, location='args')
 
 
 @api.route('/list')
 
 class CategoryCollection(Resource):
     @jwt_required
-    # @api.expect(Q_Parser)
+    @api.expect(Q_Parser)
     @api.response(404, 'This user has no categories')
     @api.response(200, 'Recipies found')
     def get(self):
@@ -57,42 +47,17 @@ class CategoryCollection(Resource):
         user_identity = get_jwt_identity()
         # created = User.query.filter_by(user_id=user_identity).first()
         the_cat = Category.query.filter_by(user_id=user_identity)
-        # args = Q_Parser.parse_args(request)
-        # q = args.get('q', '')
-        # page = args.get('page', 1)
-        # per_page = args.get('per_page', 10)
-        # if q:
-        #     the_cat = Category.query.filter(
-        #                         Category.category_name.like("%" + q + "%"))
-
-            # for a_category in the_categories:
-            
-        paged_cats = the_cat.paginate(error_out=False)
-        if not paged_cats.items:
-            return {'message': 'This user has no categories'}, 404
-        paginated=[]
-        for a_category in paged_cats.items:
-            paginated.append(a_category)
-
-        return marshal(paginated, category_list)
-
-@api.route('/search')
-class CategorySearch(Resource):
-    @jwt_required
-    @api.response(404, 'This user has no categories')
-    @api.response(200, 'Recipies found')
-    @api.expect(Q_Parser)
-    def get(self):
-        user_identity = get_jwt_identity()
-        the_cat = Category.query.filter_by(user_id=user_identity)
         args = Q_Parser.parse_args(request)
         q = args.get('q', '')
+        page = args.get('page', 1)
+        per_page = args.get('per_page', 10)
         if q:
             the_cat = Category.query.filter(
                                 Category.category_name.like("%" + q + "%"))
 
+            # for a_category in the_categories:
             
-        paged_cats = the_cat.paginate(error_out=False)
+        paged_cats = the_cat.paginate(page, per_page, error_out=False)
         if not paged_cats.items:
             return {'message': 'This user has no categories'}, 404
         paginated=[]
