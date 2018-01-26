@@ -8,7 +8,7 @@ from app.models.user import User
 from app.models.recipie import Recipie
 
 from app.models.category import Category
-from app.apis.functionality.validate import name_validate
+from app.apis.functionality.validate import name_validate, q_validate
 
 api = Namespace('recipie',
                 description='Recipie related functionality',
@@ -42,6 +42,7 @@ Q_Parser.add_argument('per_page', required=False, type=int,
 @api.route('/<int:category_id>/recipes/list')
 class RecipieCollection(Resource):
     @api.response(404, 'No Recipies created by this user')
+    @api.response(422, 'The search term q returned no value')
     @api.response(200, 'Recipies found')
     @api.expect(Q_Parser)
     @jwt_required
@@ -56,25 +57,30 @@ class RecipieCollection(Resource):
         page = args.get('page', 1)
         per_page = args.get('per_page', 10)
         if q:
-            the_recz = Recipie.query.filter(
-                Recipie.recipie_name.like("%" + q + "%"))
+            if q_validate(q):
+                the_recz = Recipie.query.filter(
+                                Recipie.created_by == user_id).filter(
+                                Recipie.category_id == category_id).filter(
+                                Recipie.recipie_name.like("%" + q + "%"))
+                paged_recz = the_recz.paginate(page, per_page, error_out=False)
+                if not paged_recz.items:
+                    return {'message': 'The search term q returned no values'}, 422
+                paginated = []
+                for a_recipe in paged_recz.items:
+                    paginated.append(a_recipe)
                 
-        
-        if the_recz is None:
+                return marshal(paginated, recipe), 200
             return {'message': 'No Recipies created by this user'}, 404
-        paged_recs = the_recz.paginate(page, per_page, error_out=False)
-        paginated = []
-        for a_recipe in paged_recs.items:
-            paginated.append(a_recipe)
 
-        size = len(paginated)
+        without_q = the_recz.paginate(page, per_page, error_out=False)
+        if not without_q.items:
+            return {'message': 'Page not found'}, 404
+        paginated=[]
+        for a_recipie in without_q.items:
+            paginated.append(a_recipie)
 
-        if size == 0:
-            return {'message': 'No Recipies created by this user'}, 404
         return marshal(paginated, recipe), 200
-
-
-
+        
 @api.route('/<int:category_id>/recipes/create')
 class RecipieCreation(Resource):
     @api.response(201, 'Recipe successfully created.')

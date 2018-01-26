@@ -60,12 +60,12 @@ class CategoryCollection(Resource):
 
                 paged_cats = the_cat.paginate(page, per_page, error_out=False)
                 if not paged_cats.items:
-                    return {'message': 'The search term q returned no values'}
+                    return {'message': 'The search term q returned no values'}, 422
                 paginated=[]
                 for a_category in paged_cats.items:
                     paginated.append(a_category)
 
-                return marshal(paginated, category_list)
+                return marshal(paginated, category_list), 200
 
             
             return {'message': 'This user has no categories '}, 404
@@ -77,7 +77,7 @@ class CategoryCollection(Resource):
         for a_category in without_q.items:
             paginated.append(a_category)
 
-            return marshal(paginated, category_list)
+        return marshal(paginated, category_list), 200
 
 
 @api.route('/create')
