@@ -40,7 +40,7 @@ class CategoryCollection(Resource):
     @jwt_required
     @api.expect(Q_Parser)
     @api.response(404, 'This user has no categories')
-    # @api.response()
+    @api.response(422, 'Page not found')
     @api.response(200, 'Recipies found')
     def get(self):
         '''List all current categories'''
@@ -68,7 +68,16 @@ class CategoryCollection(Resource):
                 return marshal(paginated, category_list)
 
             
-            return {'message': 'This user has no categories'}, 404
+            return {'message': 'This user has no categories '}, 404
+
+        without_q = the_cat.paginate(page, per_page, error_out=False)
+        if not without_q.items:
+            return {'message': 'Page not found'}, 404
+        paginated=[]
+        for a_category in without_q.items:
+            paginated.append(a_category)
+
+            return marshal(paginated, category_list)
 
 
 @api.route('/create')
