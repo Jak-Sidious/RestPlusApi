@@ -33,3 +33,10 @@ def name_validate(name):
     if len(result) is len(name):
         return True
     return False
+
+def q_validate(q):
+    q_pattern = re.compile(r'^[a-zA-Z\s]+')
+    if q_pattern.match(q):
+        return True
+    return False
+
