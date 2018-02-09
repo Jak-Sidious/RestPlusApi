@@ -81,3 +81,8 @@ To use this application ensure that you have python 3.6+ clone the repository to
 export FLASK_CONFIG=development
 python manage.py runserver
 ```
+
+11. To test the deployment on Heroku, user can visit the link:
+```
+https://yummy-recpies-api.herokuapp.com/apiv1/#/
+```
