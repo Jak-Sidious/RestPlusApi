@@ -14,5 +14,5 @@ from app.apis import apiv1_bp
 app.register_blueprint(apiv1_bp , url_prefix='/apiv1')
 
 if __name__ == '__main__':
-    app.run()
+    app.run(debug=True, threaded=True)
 
