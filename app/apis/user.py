@@ -74,6 +74,7 @@ class UserRegistration(Resource):
 @api.route('/login')
 class UserLogin(Resource):
     @api.response(200, 'User sucessfully Loged in')
+    @api.response(401, 'Invalid credentials, please try again')
     @api.response(404, 'User not registered')
     @api.expect(user_login)
     def post(self):
@@ -102,6 +103,7 @@ class UserLogin(Resource):
                                                     expires_delta=expires)
                 return {"token": access_token,
                         "response": "User sucessfully Loged in"}, 200
+            return {"message": "Invalid credentials, please try again"}, 401
 
 @api.route('/logout')
 class UserLogout(Resource):
