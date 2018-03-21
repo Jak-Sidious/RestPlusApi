@@ -101,7 +101,8 @@ class UserLogin(Resource):
                 expires = timedelta(days=10)
                 access_token = create_access_token(identity=user.user_id, 
                                                     expires_delta=expires)
-                return {"token": access_token,
+                return {"user": user.username,
+                        "token": access_token,
                         "response": "User sucessfully Loged in"}, 200
             return {"message": "Invalid credentials, please try again"}, 401
 
