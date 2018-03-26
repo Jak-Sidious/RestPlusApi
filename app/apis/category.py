@@ -24,6 +24,17 @@ category_list = api.model('category', {
     'date_modified' : fields.DateTime(readOnnly=True, description = 'date modified')
 })
 
+pagination = api.model('A page of results', {
+    'page': fields.Integer(description='Number of this page of results'),
+    'pages': fields.Integer(description='Total number of pages of results'),
+    'per_page': fields.Integer(description='Number of items per page of results'),
+    'total': fields.Integer(description='Total number of results'),
+})
+
+category_collection = api.inherit('Categories collection', pagination, {
+    'items': fields.List(fields.Nested(category_list))
+})
+
 Q_Parser = reqparse.RequestParser(bundle_errors=True)
 Q_Parser.add_argument('q', required=False,
                         help='search for word', location='args')
@@ -61,11 +72,9 @@ class CategoryCollection(Resource):
                 paged_cats = the_cat.paginate(page, per_page, error_out=False)
                 if not paged_cats.items:
                     return {'message': 'The search term q returned no values'}, 422
-                paginated=[]
-                for a_category in paged_cats.items:
-                    paginated.append(a_category)
 
-                return marshal(paginated, category_list), 200
+                else:
+                    return marshal(paged_cats, category_collection), 200
 
             
             return {'message': 'This user has no categories '}, 404
@@ -73,11 +82,7 @@ class CategoryCollection(Resource):
         without_q = the_cat.paginate(page, per_page, error_out=False)
         if not without_q.items:
             return {'message': 'Page not found'}, 404
-        paginated=[]
-        for a_category in without_q.items:
-            paginated.append(a_category)
-
-        return marshal(paginated, category_list), 200
+        return marshal(without_q, category_collection), 200
 
 
 @api.route('/create')

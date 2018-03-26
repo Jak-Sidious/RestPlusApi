@@ -56,6 +56,7 @@ class RecipieCollection(Resource):
         q = args.get('q', '')
         page = args.get('page', 1)
         per_page = args.get('per_page', 10)
+        print("=====")
         if q:
             if q_validate(q):
                 the_recz = Recipie.query.filter(
@@ -68,6 +69,8 @@ class RecipieCollection(Resource):
                 paginated = []
                 for a_recipe in paged_recz.items:
                     paginated.append(a_recipe)
+                
+
                 
                 return marshal(paginated, recipe), 200
             return {'message': 'No Recipies created by this user'}, 404
