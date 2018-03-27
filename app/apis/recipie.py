@@ -24,6 +24,16 @@ recipe = api.model('recipie', {
     'date_modified': fields.DateTime(readOnly=True, description='Date modified')
 })
 
+pagination = api.model('A page of results', {
+    'page': fields.Integer(description='Number of this page of results'),
+    'pages': fields.Integer(description='Total number of pages of results'),
+    'per_page': fields.Integer(description='Number of items per page of results'),
+    'total': fields.Integer(description='Total number of results'),
+})
+
+recipe_collection = api.inherit('Categories collection', pagination, {
+    'items': fields.List(fields.Nested(recipe))
+})
 
 recipie_data = api.model('create recipie', {
     'recipie_name': fields.String(required=True, description='Name of the current recipe'),
@@ -66,23 +76,23 @@ class RecipieCollection(Resource):
                 paged_recz = the_recz.paginate(page, per_page, error_out=False)
                 if not paged_recz.items:
                     return {'message': 'The search term q returned no values'}, 422
-                paginated = []
-                for a_recipe in paged_recz.items:
-                    paginated.append(a_recipe)
+                # paginated = []
+                # for a_recipe in paged_recz.items:
+                #     paginated.append(a_recipe)
                 
 
                 
-                return marshal(paginated, recipe), 200
+                return marshal(paged_recz, recipe_collection), 200
             return {'message': 'No Recipies created by this user'}, 404
 
         without_q = the_recz.paginate(page, per_page, error_out=False)
         if not without_q.items:
             return {'message': 'Page not found'}, 404
-        paginated=[]
-        for a_recipie in without_q.items:
-            paginated.append(a_recipie)
+        # paginated=[]
+        # for a_recipie in without_q.items:
+        #     paginated.append(a_recipie)
 
-        return marshal(paginated, recipe), 200
+        return marshal(without_q, recipe_collection), 200
         
 @api.route('/<int:category_id>/recipes/create')
 class RecipieCreation(Resource):
