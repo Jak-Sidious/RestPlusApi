@@ -47,7 +47,7 @@ Q_Parser.add_argument('q', required=False,
 Q_Parser.add_argument('page', required=False, type=int,
                         help='Number of pages', location='args')
 Q_Parser.add_argument('per_page', required=False, type=int,
-                        help='categories per page', default=10, location='args')
+                        help='categories per page', default=9, location='args')
 
 @api.route('/<int:category_id>/recipes/list')
 class RecipieCollection(Resource):
@@ -65,7 +65,7 @@ class RecipieCollection(Resource):
         args = Q_Parser.parse_args(request)
         q = args.get('q', '')
         page = args.get('page', 1)
-        per_page = args.get('per_page', 10)
+        per_page = args.get('per_page', 9)
         print("=====")
         if q:
             if q_validate(q):

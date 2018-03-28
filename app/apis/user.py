@@ -88,11 +88,11 @@ class UserLogin(Resource):
         if validated_username is False:
             return {'message': 'Username is invalid it should contain' 
                     ' alphanumeric charcaters followed by an underscore'
-                    ' of not more than 25 characters'}
+                    ' of not more than 25 characters'}, 422
 
         if validated_password is False:
             return {'message': 'Password must be between 6 and 25 alphanumeric'
-                    ' characters'}
+                    ' characters'}, 422
         user = User.query.filter_by(username=username).first()
         if user is None:
             return {"message": "User not registered"}, 404

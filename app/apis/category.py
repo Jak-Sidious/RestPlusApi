@@ -41,7 +41,7 @@ Q_Parser.add_argument('q', required=False,
 Q_Parser.add_argument('page', required=False, type=int,
                         help='Number of pages', location='args')
 Q_Parser.add_argument('per_page', required=False, type=int,
-                        help='categories per page', default=10, location='args')
+                        help='categories per page', default=9, location='args')
 
 
 
@@ -62,7 +62,7 @@ class CategoryCollection(Resource):
         args = Q_Parser.parse_args(request)
         q = args.get('q', '')
         page = args.get('page', 1)
-        per_page = args.get('per_page', 10)
+        per_page = args.get('per_page', 9)
         if q:
             if q_validate(q):
                 the_cat = Category.query.filter(
@@ -100,10 +100,10 @@ class CategoryCreation(Resource):
         catDesc_validator = name_validate(categoryDesc)
 
         if catName_validator is False:
-            return {"message": "category name cannot be blank"}
+            return {"message": "category name cannot be blank"}, 422
         if catDesc_validator is False:
             return {"message": "category description cannot be blank, please" 
-                    " enter a valid description"}
+                    " enter a valid description"}, 422
         user_id = get_jwt_identity()
         if Category.query.filter_by(
                     user_id=user_id,
