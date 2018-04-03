@@ -35,7 +35,7 @@ class UserTest(BaseTest):
                             data=json.dumps(self.login_data), 
                             content_type="application/json")
         msg = json.loads(res.data)
-        self.assertIn(msg['message'], 'User not registered')
+        self.assertIn(msg['message'], 'The requested username is unavailable')
         self.assertEqual(res.status_code, 404)
 
     def test_user_cant_register_twice(self):
