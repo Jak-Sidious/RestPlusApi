@@ -75,7 +75,7 @@ class UserRegistration(Resource):
 class UserLogin(Resource):
     @api.response(200, 'User sucessfully Loged in')
     @api.response(401, 'Invalid credentials, please try again')
-    @api.response(404, 'User not registered')
+    @api.response(404, 'The requested username is unavailable')
     @api.expect(user_login)
     def post(self):
         '''Logs in a regestered user'''
@@ -95,7 +95,7 @@ class UserLogin(Resource):
                     ' characters'}, 422
         user = User.query.filter_by(username=username).first()
         if user is None:
-            return {"message": "User not registered"}, 404
+            return {"message": "The requested username is unavailable"}, 404
         else:
             if user.password_is_valid(password):
                 expires = timedelta(days=10)
