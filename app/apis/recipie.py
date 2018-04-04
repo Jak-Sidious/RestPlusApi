@@ -87,7 +87,7 @@ class RecipieCollection(Resource):
 
         without_q = the_recz.paginate(page, per_page, error_out=False)
         if not without_q.items:
-            return {'message': 'Page not found'}, 404
+            return {'message': 'No Recipies created by this user'}, 404
         # paginated=[]
         # for a_recipie in without_q.items:
         #     paginated.append(a_recipie)
