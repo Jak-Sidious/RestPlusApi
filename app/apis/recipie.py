@@ -76,10 +76,6 @@ class RecipieCollection(Resource):
                 paged_recz = the_recz.paginate(page, per_page, error_out=False)
                 if not paged_recz.items:
                     return {'message': 'The search term q returned no values'}, 422
-                # paginated = []
-                # for a_recipe in paged_recz.items:
-                #     paginated.append(a_recipe)
-                
 
                 
                 return marshal(paged_recz, recipe_collection), 200
@@ -88,9 +84,6 @@ class RecipieCollection(Resource):
         without_q = the_recz.paginate(page, per_page, error_out=False)
         if not without_q.items:
             return {'message': 'No Recipies created by this user'}, 404
-        # paginated=[]
-        # for a_recipie in without_q.items:
-        #     paginated.append(a_recipie)
 
         return marshal(without_q, recipe_collection), 200
         
